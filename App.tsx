@@ -87,12 +87,12 @@ const App = () => {
       {/* Intro Screen */}
       {gameState === 'START' && (
         <div className="text-center p-8 animate-fadeIn max-w-md">
-           {/* Audi Rings SVG (Simplified) */}
+           {/* Logo: 4 Rectangles */}
            <svg className="w-32 h-12 mx-auto mb-8 text-white" viewBox="0 0 100 35" fill="none" stroke="currentColor" strokeWidth="2">
-             <circle cx="17.5" cy="17.5" r="15" />
-             <circle cx="39.5" cy="17.5" r="15" />
-             <circle cx="61.5" cy="17.5" r="15" />
-             <circle cx="83.5" cy="17.5" r="15" />
+             <rect x="5" y="5" width="12" height="25" />
+             <rect x="25" y="5" width="12" height="25" />
+             <rect x="45" y="5" width="12" height="25" />
+             <rect x="65" y="5" width="12" height="25" />
            </svg>
            
            <h1 className="text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
