@@ -1,0 +1,44 @@
+
+[1m[46m RUN [49m[22m [36mv4.0.15 [39m[90m/Users/skfyui1/Documents/GitHub/audiracer/audiracer[39m
+
+[90mstdout[2m | components/GameCanvas.test.tsx
+[22m[39mvitest.setup.ts loaded
+
+ [32m✓[39m components/GameCanvas.test.tsx[2m:141:5[22m[2m > [22mGameCanvas[2m > [22mrenders without crashing[32m 9[2mms[22m[39m
+ [32m✓[39m components/GameCanvas.test.tsx[2m:152:5[22m[2m > [22mGameCanvas[2m > [22minitializes audio context on user interaction[32m 1[2mms[22m[39m
+ [32m✓[39m components/GameCanvas.test.tsx[2m:165:5[22m[2m > [22mGameCanvas[2m > [22mruns game loop and draws to canvas[32m 2[2mms[22m[39m
+ [32m✓[39m components/GameCanvas.test.tsx[2m:186:5[22m[2m > [22mGameCanvas[2m > [22mhandles key events for movement[32m 1[2mms[22m[39m
+ [31m×[39m components/GameCanvas.test.tsx[2m:203:5[22m[2m > [22mGameCanvas[2m > [22mspawns enemy and handles 3 lives before game over[32m 243[2mms[22m[39m
+[31m   → expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+ [32m✓[39m components/GameCanvas.test.tsx[2m:270:5[22m[2m > [22mGameCanvas[2m > [22mcollects battery pickup[32m 123[2mms[22m[39m
+ [32m✓[39m components/GameCanvas.test.tsx[2m:322:5[22m[2m > [22mGameCanvas[2m > [22mfires projectile and destroys enemy[32m 38[2mms[22m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m components/GameCanvas.test.tsx[2m:203:5[22m[2m > [22mGameCanvas[2m > [22mspawns enemy and handles 3 lives before game over
+[31m[1mAssertionError[22m: expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2m❯[22m components/GameCanvas.test.tsx:[2m265:32[22m[39m
+    [90m263| [39m        [90m// Crash 3 (Lives 1 -> 0) -> Game Over[39m
+    [90m264| [39m        [34mforceCrash[39m()[33m;[39m
+    [90m265| [39m        expect(mockOnGameOver).toHaveBeenCalledWith(expect.objectConta…
+    [90m   | [39m                               [31m^[39m
+    [90m266| [39m            reason[33m:[39m [32m'CRASH'[39m
+    [90m267| [39m        }))[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+
+
+[2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
+[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m6 passed[39m[22m[90m (7)[39m
+[2m   Start at [22m 11:10:42
+[2m   Duration [22m 727ms[2m (transform 42ms, setup 30ms, import 62ms, tests 419ms, environment 161ms)[22m
+
+{"numTotalTestSuites":2,"numPassedTestSuites":0,"numFailedTestSuites":2,"numPendingTestSuites":0,"numTotalTests":7,"numPassedTests":6,"numFailedTests":1,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1764843042929,"success":false,"testResults":[{"assertionResults":[{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas renders without crashing","status":"passed","title":"renders without crashing","duration":9.199208999999996,"failureMessages":[],"location":{"line":141,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas initializes audio context on user interaction","status":"passed","title":"initializes audio context on user interaction","duration":1.4714579999999842,"failureMessages":[],"location":{"line":152,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas runs game loop and draws to canvas","status":"passed","title":"runs game loop and draws to canvas","duration":1.595083000000045,"failureMessages":[],"location":{"line":165,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas handles key events for movement","status":"passed","title":"handles key events for movement","duration":1.2382499999999936,"failureMessages":[],"location":{"line":186,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas spawns enemy and handles 3 lives before game over","status":"failed","title":"spawns enemy and handles 3 lives before game over","duration":243.288209,"failureMessages":["AssertionError: expected \"vi.fn()\" to be called with arguments: [ Array(1) ]\u001b[90m\n\nNumber of calls: \u001b[1m0\u001b[22m\n\u001b[39m\n    at Proxy.<anonymous> (file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/expect/dist/index.js:1420:10)\n    at Proxy.<anonymous> (file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/expect/dist/index.js:1090:14)\n    at Proxy.methodWrapper (file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/chai/index.js:1700:25)\n    at /Users/skfyui1/Documents/GitHub/audiracer/audiracer/components/GameCanvas.test.tsx:265:32\n    at file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)\n    at file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:1650:37"],"location":{"line":203,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas collects battery pickup","status":"passed","title":"collects battery pickup","duration":123.05258400000002,"failureMessages":[],"location":{"line":270,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas fires projectile and destroys enemy","status":"passed","title":"fires projectile and destroys enemy","duration":38.02025000000003,"failureMessages":[],"location":{"line":322,"column":5},"meta":{}}],"startTime":1764843043239,"endTime":1764843043657.0203,"status":"failed","message":"","name":"/Users/skfyui1/Documents/GitHub/audiracer/audiracer/components/GameCanvas.test.tsx"}]}
+[1m[7m[35m HTML [39m[27m[22m [35mReport is generated[39m
+[2m       You can run [22m[1mnpx vite preview --outDir html[22m[2m to see the test results.[22m
