@@ -19,10 +19,11 @@ export interface CarModel {
 }
 
 export interface GameState {
-  screen: 'START' | 'GARAGE' | 'RACING' | 'GAMEOVER';
+  screen: 'START' | 'LOGIN' | 'GARAGE' | 'LOBBY' | 'COUNTDOWN' | 'RACING' | 'GAMEOVER' | 'LEADERBOARD';
   score: number;
   distance: number;
   level: number;
+  lives: number;
 }
 
 export interface PlayerConfig {
@@ -33,17 +34,19 @@ export interface PlayerConfig {
 }
 
 export interface GameOverStats {
-    score: number;
-    distance: number;
-    killCount?: number;
-    reason?: 'CRASH' | 'EMPTY_BATTERY' | 'EMPTY_FUEL';
+  score: number;
+  distance: number;
+  killCount?: number;
+  reason?: 'CRASH' | 'EMPTY_BATTERY' | 'EMPTY_FUEL';
 }
 
 export interface HighScoreEntry {
-    score: number;
-    carName: string;
-    date: string;
-    isNew?: boolean; // Internal flag for highlighting
+  id?: string;
+  player_name: string;
+  score: number;
+  distance: number;
+  created_at?: string;
+  isNew?: boolean; // Internal flag for highlighting
 }
 
 export interface GeminiResponse {
