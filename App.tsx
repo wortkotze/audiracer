@@ -310,15 +310,25 @@ const App = () => {
 
   // Settings State
   const [showSettings, setShowSettings] = useState(false);
-  const [isSoundEnabled, setIsSoundEnabled] = useState(() => {
-    return localStorage.getItem('audi_racer_sound') !== 'false'; // Default true
+  const [isSfxEnabled, setIsSfxEnabled] = useState(() => {
+    return localStorage.getItem('audi_racer_sfx') !== 'false';
+  });
+  const [isMusicEnabled, setIsMusicEnabled] = useState(() => {
+    return localStorage.getItem('audi_racer_music') !== 'false';
   });
 
-  // Toggle Sound
-  const toggleSound = () => {
-    setIsSoundEnabled(prev => {
+  const toggleSfx = () => {
+    setIsSfxEnabled(prev => {
       const newValue = !prev;
-      localStorage.setItem('audi_racer_sound', String(newValue));
+      localStorage.setItem('audi_racer_sfx', String(newValue));
+      return newValue;
+    });
+  };
+
+  const toggleMusic = () => {
+    setIsMusicEnabled(prev => {
+      const newValue = !prev;
+      localStorage.setItem('audi_racer_music', String(newValue));
       return newValue;
     });
   };
@@ -400,14 +410,23 @@ const App = () => {
             <h2 className="text-2xl font-pixel text-white mb-6 text-center">SETTINGS</h2>
 
             <div className="space-y-6">
-              {/* Sound Toggle */}
+              {/* Sound Toggles */}
               <div className="flex justify-between items-center">
-                <span className="text-audi-grey">Sound Effects</span>
+                <span className="text-audi-grey">SFX</span>
                 <button
-                  onClick={toggleSound}
-                  className={`w-12 h-6 rounded-full p-1 transition-colors ${isSoundEnabled ? 'bg-audi-red' : 'bg-gray-600'}`}
+                  onClick={toggleSfx}
+                  className={`w-12 h-6 rounded-full p-1 transition-colors ${isSfxEnabled ? 'bg-audi-red' : 'bg-gray-600'}`}
                 >
-                  <div className={`w-4 h-4 bg-white rounded-full transition-transform ${isSoundEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
+                  <div className={`w-4 h-4 bg-white rounded-full transition-transform ${isSfxEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
+                </button>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-audi-grey">Music</span>
+                <button
+                  onClick={toggleMusic}
+                  className={`w-12 h-6 rounded-full p-1 transition-colors ${isMusicEnabled ? 'bg-audi-red' : 'bg-gray-600'}`}
+                >
+                  <div className={`w-4 h-4 bg-white rounded-full transition-transform ${isMusicEnabled ? 'translate-x-6' : 'translate-x-0'}`} />
                 </button>
               </div>
 
@@ -614,7 +633,8 @@ const App = () => {
               opponentState={opponentState}
               onProgress={handleProgress}
               isRaceStarted={gameState === 'RACING'}
-              isSoundEnabled={isSoundEnabled}
+              isSfxEnabled={isSfxEnabled}
+              isMusicEnabled={isMusicEnabled}
             />
 
             {/* COUNTDOWN OVERLAY */}
@@ -737,11 +757,9 @@ const App = () => {
                   >
                     {isMultiplayer ? (opponentState ? 'REMATCH' : 'OPPONENT LEFT') : 'RACE AGAIN'}
                   </Button>
-                  {isMultiplayer && (
-                    <Button onClick={handleReturnToLobby} fullWidth className="bg-gray-700 text-white hover:bg-gray-600">
-                      LOBBY
-                    </Button>
-                  )}
+                  <Button onClick={handleReturnToLobby} fullWidth className="bg-gray-700 text-white hover:bg-gray-600">
+                    {isMultiplayer ? 'LOBBY' : 'MAIN MENU'}
+                  </Button>
                 </div>
               </>
             )}

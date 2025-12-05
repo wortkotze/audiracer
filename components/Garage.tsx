@@ -164,7 +164,7 @@ export const Garage: React.FC<GarageProps> = ({ onStartRace }) => {
     };
 
     return (
-        <div className="flex flex-col h-full max-w-lg mx-auto p-4 animate-fadeIn">
+        <div className="flex flex-col h-full max-w-lg mx-auto px-4 pb-4 pt-16 animate-fadeIn">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-pixel font-bold text-white">GARAGE</h2>
                 <div className="flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full">

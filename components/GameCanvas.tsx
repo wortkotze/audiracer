@@ -9,7 +9,8 @@ interface GameCanvasProps {
     opponentState: import('../services/multiplayerService').PlayerState | null;
     onProgress: (score: number, distance: number, lives: number) => void;
     isRaceStarted: boolean;
-    isSoundEnabled: boolean;
+    isSfxEnabled: boolean;
+    isMusicEnabled: boolean;
 }
 
 type EntityType = 'enemy_bmw' | 'enemy_merc' | 'enemy_toyota' | 'zombie' | 'projectile' | 'battery' | 'fuel';
@@ -42,7 +43,7 @@ interface FloatingText {
     color: string;
 }
 
-export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, onGameOver, opponentState, onProgress, isRaceStarted = true, isSoundEnabled = true }) => {
+export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, onGameOver, opponentState, onProgress, isRaceStarted = true, isSfxEnabled = true, isMusicEnabled = true }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const frameIdRef = useRef<number>(0);
 
@@ -57,6 +58,19 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
     const engineOscRef = useRef<OscillatorNode | null>(null);
     const engineGainRef = useRef<GainNode | null>(null);
     const engineFilterRef = useRef<BiquadFilterNode | null>(null);
+
+    // Music Refs
+    const musicOscRef = useRef<OscillatorNode | null>(null);
+    const musicGainRef = useRef<GainNode | null>(null);
+    const musicNextNoteTimeRef = useRef(0);
+    const musicNoteIndexRef = useRef(0);
+    const isMusicPlayingRef = useRef(false);
+    const currentThemeRef = useRef('CITY');
+    const fadeGainRef = useRef<GainNode | null>(null); // For Crossfading
+
+    // Tire Screech Refs
+    const tireNoiseNodeRef = useRef<AudioBufferSourceNode | null>(null);
+    const tireGainRef = useRef<GainNode | null>(null);
 
     // Constants for Perspective
     const HORIZON_Y = GAME_HEIGHT * 0.35;
@@ -115,8 +129,11 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
     // ----------------------------------------
     // Audio Engine
     // ----------------------------------------
+    // ----------------------------------------
+    // Audio Engine
+    // ----------------------------------------
     const initAudio = () => {
-        if (!isSoundEnabled) return; // Don't init if sound is off
+        if (!isSfxEnabled && !isMusicEnabled) return;
 
         if (audioCtxRef.current) {
             if (audioCtxRef.current.state === 'suspended') {
@@ -128,82 +145,283 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
         const AudioContextClass = window.AudioContext || (window as any).webkitAudioContext;
         audioCtxRef.current = new AudioContextClass();
 
-        const osc = audioCtxRef.current.createOscillator();
-        const gain = audioCtxRef.current.createGain();
-        const filter = audioCtxRef.current.createBiquadFilter();
+        // --- Engine Sound Setup ---
+        if (isSfxEnabled) {
+            const osc = audioCtxRef.current.createOscillator();
+            const gain = audioCtxRef.current.createGain();
+            const filter = audioCtxRef.current.createBiquadFilter();
 
-        const isEV = carModel.type === EngineType.EV;
+            const isEV = carModel.type === EngineType.EV;
 
-        // Filter Setup
-        filter.type = 'lowpass';
-        filter.frequency.value = isEV ? 800 : 200; // Lower freq start for ICE rumble
-        filter.Q.value = 1;
+            // Filter Setup
+            filter.type = 'lowpass';
+            filter.frequency.value = isEV ? 800 : 200;
+            filter.Q.value = 1;
 
-        // Oscillator Setup
-        osc.type = isEV ? 'sine' : 'sawtooth'; // Sine for clean EV hum, Sawtooth for ICE grit
-        osc.frequency.value = isEV ? 100 : 60; // Lower base rumble for ICE
+            // Oscillator Setup
+            osc.type = isEV ? 'sine' : 'sawtooth';
+            osc.frequency.value = isEV ? 100 : 60;
 
-        // Reduced Volume for comfort
-        gain.gain.value = 0.02; // Start very quiet
+            // Reduced Volume for comfort
+            gain.gain.value = 0.0; // Start silent
 
-        // Connect Chain: Osc -> Filter -> Gain -> Dest
-        osc.connect(filter);
-        filter.connect(gain);
-        gain.connect(audioCtxRef.current.destination);
+            // Connect Chain: Osc -> Filter -> Gain -> Dest
+            osc.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtxRef.current.destination);
 
-        osc.start();
+            osc.start();
 
-        engineOscRef.current = osc;
-        engineGainRef.current = gain;
-        engineFilterRef.current = filter;
+            engineOscRef.current = osc;
+            engineGainRef.current = gain;
+            engineFilterRef.current = filter;
+
+            // --- Tire Screech Setup (Noise Buffer) ---
+            const bufferSize = audioCtxRef.current.sampleRate * 2; // 2 seconds of noise
+            const buffer = audioCtxRef.current.createBuffer(1, bufferSize, audioCtxRef.current.sampleRate);
+            const data = buffer.getChannelData(0);
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+
+            const noise = audioCtxRef.current.createBufferSource();
+            noise.buffer = buffer;
+            noise.loop = true;
+
+            const tireGain = audioCtxRef.current.createGain();
+            tireGain.gain.value = 0;
+
+            // Bandpass for screech sound
+            const tireFilter = audioCtxRef.current.createBiquadFilter();
+            tireFilter.type = 'bandpass';
+            tireFilter.frequency.value = 1000;
+            tireFilter.Q.value = 1;
+
+            noise.connect(tireFilter);
+            tireFilter.connect(tireGain);
+            tireGain.connect(audioCtxRef.current.destination);
+
+            noise.start();
+
+            tireNoiseNodeRef.current = noise;
+            tireGainRef.current = tireGain;
+        }
     };
 
-    // Handle Sound Toggle
+    // Handle Sound Toggles
     useEffect(() => {
         if (audioCtxRef.current) {
-            if (isSoundEnabled) {
+            if (isSfxEnabled || isMusicEnabled) {
                 audioCtxRef.current.resume().catch(() => { });
-                // Re-init if needed? Usually resume is enough if already created.
-                // If not created yet, initAudio will be called on input.
             } else {
                 audioCtxRef.current.suspend().catch(() => { });
             }
         }
-    }, [isSoundEnabled]);
+        // Mute Engine/Tire if SFX disabled
+        if (engineGainRef.current) engineGainRef.current.gain.value = isSfxEnabled ? 0.015 : 0; // LOWERED BASE VOLUME FURTHER
+        if (tireGainRef.current) tireGainRef.current.gain.value = 0;
+    }, [isSfxEnabled, isMusicEnabled]);
 
     const updateEngineSound = (speed: number) => {
-        if (!isSoundEnabled || !engineOscRef.current || !audioCtxRef.current || !engineFilterRef.current) return;
+        if (!isSfxEnabled || !engineOscRef.current || !audioCtxRef.current || !engineFilterRef.current) return;
+
+        // STOP AUDIO ON GAME OVER
+        if (gameState.current.isGameOver || (gameState.current.lives <= 0)) {
+            if (engineGainRef.current) engineGainRef.current.gain.setTargetAtTime(0, audioCtxRef.current.currentTime, 0.1);
+            return;
+        }
+
         if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume().catch(() => { });
 
         const isEV = carModel.type === EngineType.EV;
-
-        const speedFactor = speed / 300; // 0 to 1 range roughly
-
         const t = audioCtxRef.current.currentTime;
+
+        // --- Gear Logic ---
+        // Simulate gears by modulo speed. 0-60, 60-120, 120-180...
+        // Normalized RPM (0 to 1) within current gear
+        let rpm = 0;
+        let gear = 1;
+
+        if (isEV) {
+            // EV: Linear, one gear
+            rpm = speed / 300;
+        } else {
+            // ICE: 5 Gears
+            if (speed < 60) { rpm = speed / 60; gear = 1; }
+            else if (speed < 110) { rpm = (speed - 60) / 50; gear = 2; }
+            else if (speed < 160) { rpm = (speed - 110) / 50; gear = 3; }
+            else if (speed < 220) { rpm = (speed - 160) / 60; gear = 4; }
+            else { rpm = (speed - 220) / 80; gear = 5; } // Top gear
+        }
+
+        // Clamp RPM
+        rpm = Math.max(0, Math.min(1, rpm));
 
         if (isEV) {
             // EV: Pitch glides up like a spaceship
-            const targetFreq = 100 + (speedFactor * 400);
-            engineOscRef.current.frequency.setTargetAtTime(targetFreq, t, 0.2);
-            // Filter opens up for "whine"
-            engineFilterRef.current.frequency.setTargetAtTime(800 + (speedFactor * 1000), t, 0.2);
+            const targetFreq = 100 + (speed / 300 * 400); // Base on absolute speed for EV
+            engineOscRef.current.frequency.setTargetAtTime(targetFreq, t, 0.1);
+            engineFilterRef.current.frequency.setTargetAtTime(800 + (speed / 300 * 1000), t, 0.1);
         } else {
-            // ICE: Pitch rises but stays deeper
-            const targetFreq = 50 + (speedFactor * 200);
-            engineOscRef.current.frequency.setTargetAtTime(targetFreq, t, 0.2);
-            // Filter mimics valve opening
-            engineFilterRef.current.frequency.setTargetAtTime(200 + (speedFactor * 600), t, 0.2);
+            // ICE: Pitch follows RPM
+            const baseFreq = 60 + (gear * 10); // Higher gears start slightly higher pitch? Or lower? Real cars RPM drops.
+            // Let's model RPM directly: Low RPM = 50Hz, High RPM = 150Hz
+            const targetFreq = 50 + (rpm * 150);
+
+            engineOscRef.current.frequency.setTargetAtTime(targetFreq, t, 0.1);
+            // Filter mimics valve opening - opens wide at high RPM
+            engineFilterRef.current.frequency.setTargetAtTime(200 + (rpm * 800), t, 0.1);
         }
 
-        // Volume ducking when stopped, but max volume capped lower than before
-        const targetGain = speed > 5 ? 0.04 : 0.01;
+        // Volume ducking when stopped
+        const targetGain = speed > 5 ? 0.015 : 0.002; // LOWERED VOLUME to SUBTLE
         if (engineGainRef.current) {
-            engineGainRef.current.gain.setTargetAtTime(targetGain, t, 0.5);
+            engineGainRef.current.gain.setTargetAtTime(targetGain, t, 0.2);
         }
     };
 
+    // Tire Screech Update
+    const updateTireSound = (speed: number, isSwerving: boolean) => {
+        if (!isSfxEnabled || !tireGainRef.current || !audioCtxRef.current) return;
+
+        const t = audioCtxRef.current.currentTime;
+        const threshold = 120; // Only screech at high speeds
+
+        if (isSwerving && speed > threshold) {
+            // Volume increases with speed above threshold
+            const intensity = Math.min((speed - threshold) / 100, 1);
+            tireGainRef.current.gain.setTargetAtTime(intensity * 0.1, t, 0.1);
+        } else {
+            tireGainRef.current.gain.setTargetAtTime(0, t, 0.2); // Fade out quickly
+        }
+    };
+
+    // Arcade Music Loop (Simple Arpeggio)
+    const updateMusic = () => {
+        if (!isMusicEnabled || !audioCtxRef.current) {
+            if (isMusicPlayingRef.current && musicGainRef.current && audioCtxRef.current) {
+                musicGainRef.current.gain.setTargetAtTime(0, audioCtxRef.current.currentTime, 0.5);
+                isMusicPlayingRef.current = false;
+            }
+            return;
+        }
+
+        const t = audioCtxRef.current.currentTime;
+
+        // Init Music Node if needed (lazy init)
+        if (!musicOscRef.current) {
+            const osc = audioCtxRef.current.createOscillator();
+            const gain = audioCtxRef.current.createGain();
+            // Master Fader for music
+            const fadeGain = audioCtxRef.current.createGain();
+
+            osc.type = 'square';
+            osc.connect(gain);
+            gain.connect(fadeGain);
+            fadeGain.connect(audioCtxRef.current.destination);
+            osc.start();
+
+            gain.gain.value = 0;
+            fadeGain.gain.value = 1.0;
+
+            musicOscRef.current = osc;
+            musicGainRef.current = gain;
+            fadeGainRef.current = fadeGain;
+            musicNextNoteTimeRef.current = t;
+        }
+
+        // STOP MUSIC ON GAME OVER
+        if (gameState.current.isGameOver || (gameState.current.lives <= 0)) {
+            if (musicGainRef.current) musicGainRef.current.gain.setTargetAtTime(0, t, 0.5);
+            return;
+        }
+
+        // --- ADAPTIVE THEME LOGIC ---
+        // Check current theme - Cycle every 120,000m
+        const dist = gameState.current.distance;
+        const cycle = dist % 120000;
+        let targetTheme = 'CITY';
+
+        if (cycle < 20000) targetTheme = 'CITY';
+        else if (cycle < 40000) targetTheme = 'DESERT';
+        else if (cycle < 60000) targetTheme = 'SNOW';
+        else if (cycle < 80000) targetTheme = 'MARS';
+        else if (cycle < 100000) targetTheme = 'SYNTH';
+        else targetTheme = 'MATRIX';
+
+        // Crossfade on change
+        if (targetTheme !== currentThemeRef.current) {
+            currentThemeRef.current = targetTheme;
+            // Quick fade out/in effect to transition
+            if (fadeGainRef.current) {
+                fadeGainRef.current.gain.setTargetAtTime(0, t, 0.5);
+                setTimeout(() => {
+                    if (fadeGainRef.current) fadeGainRef.current.gain.setTargetAtTime(1, audioCtxRef.current!.currentTime, 0.5);
+                }, 500);
+            }
+        }
+
+        // Schedule Notes
+        let tempo = 0.15;
+        let melody: number[] = [];
+
+        switch (currentThemeRef.current) {
+            case 'CITY':
+                tempo = 0.15;
+                melody = [220, 0, 220, 0, 220, 261, 329, 261, 196, 0, 196, 0, 261, 293, 261, 196];
+                break;
+            case 'DESERT':
+                tempo = 0.16; // Slower, brooding
+                // Phrygian Dominant-ish: E, F, G#, A, B, C, D
+                melody = [329, 349, 415, 349, 329, 0, 293, 0, 329, 349, 329, 293, 246, 0, 329, 0];
+                break;
+            case 'SNOW':
+                tempo = 0.14; // Bright
+                // Major Pentatonic: C, D, E, G, A
+                melody = [523, 0, 392, 0, 329, 392, 523, 587, 659, 587, 523, 392, 329, 0, 392, 0];
+                break;
+            case 'MARS':
+                tempo = 0.20; // Slow, Heavy
+                // Low Holst-inspired
+                melody = [110, 110, 110, 123, 110, 0, 146, 0, 130, 130, 130, 123, 110, 0, 98, 0];
+                break;
+            case 'SYNTH':
+                tempo = 0.13;
+                melody = [146, 146, 293, 0, 146, 146, 261, 0, 130, 130, 261, 0, 130, 130, 220, 0];
+                break;
+            case 'MATRIX':
+                tempo = 0.10;
+                melody = [329, 440, 329, 415, 329, 392, 329, 349, 164, 0, 164, 0, 164, 0, 329, 0];
+                break;
+        }
+
+        if (t >= musicNextNoteTimeRef.current) {
+            const freq = melody[musicNoteIndexRef.current];
+            if (musicOscRef.current && musicGainRef.current) {
+                if (freq > 0) {
+                    musicOscRef.current.frequency.setValueAtTime(freq, t);
+                    musicGainRef.current.gain.setTargetAtTime(0.025, t, 0.02); // LOWERED MUSIC VOL (Was 0.05)
+                } else {
+                    musicGainRef.current.gain.setTargetAtTime(0, t, 0.02);
+                }
+            }
+
+            musicNextNoteTimeRef.current = (musicNextNoteTimeRef.current + tempo);
+            musicNoteIndexRef.current = (musicNoteIndexRef.current + 1) % melody.length;
+        }
+
+        isMusicPlayingRef.current = true;
+    };
+
+    // Call Audio Updates in Loop
+    const updateAudio = (speed: number, isSwerving: boolean) => {
+        updateEngineSound(speed);
+        updateTireSound(speed, isSwerving);
+        updateMusic();
+    };
+
     const playSoundEffect = (type: 'shoot' | 'crash' | 'pickup' | 'empty' | 'explode') => {
-        if (!isSoundEnabled || !audioCtxRef.current) return;
+        if (!isSfxEnabled || !audioCtxRef.current) return;
         if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume().catch(() => { });
 
         const osc = audioCtxRef.current.createOscillator();
@@ -373,19 +591,106 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
         // Drawing Helpers
         // ----------------------------------------
 
-        const drawLandscape = (ctx: CanvasRenderingContext2D) => {
-            // Sky Gradient (Dark Night)
+        const getTheme = (dist: number) => {
+            // Cycle every 120,000m (20km per theme)
+            const cycle = dist % 120000;
+
+            // 0-20k: Night City
+            if (cycle < 20000) {
+                return {
+                    name: 'CITY',
+                    skyTop: '#020617', skyBottom: '#1e1b4b',
+                    roadColor: ['#111', '#222'],
+                    ground: '#0f172a',
+                    grid: false, gridColor: 'transparent',
+                    fog: 0
+                };
+            }
+            // 20-40k: Desert (Sunset)
+            else if (cycle < 40000) {
+                return {
+                    name: 'DESERT',
+                    skyTop: '#4a0404', skyBottom: '#f97316', // Red to Orange
+                    roadColor: ['#292524', '#44403c'],
+                    ground: '#78350f', // Brown
+                    grid: false, gridColor: 'transparent',
+                    fog: 0.02
+                };
+            }
+            // 40-60k: Snow (Day/Grey)
+            else if (cycle < 60000) {
+                return {
+                    name: 'SNOW',
+                    skyTop: '#64748b', skyBottom: '#cbd5e1', // Grey to White
+                    roadColor: ['#334155', '#475569'], // Blueish Asphalt
+                    ground: '#f1f5f9', // White
+                    grid: false, gridColor: 'transparent',
+                    fog: 0.03
+                };
+            }
+            // 60-80k: Mars (Red)
+            else if (cycle < 80000) {
+                return {
+                    name: 'MARS',
+                    skyTop: '#450a0a', skyBottom: '#7f1d1d',
+                    roadColor: ['#451a03', '#78350f'],
+                    ground: '#451a03',
+                    grid: true, gridColor: '#ef4444',
+                    fog: 0.1 // Dusty
+                };
+            }
+            // 80-100k: Synthwave
+            else if (cycle < 100000) {
+                return {
+                    name: 'SYNTH',
+                    skyTop: '#2e003e', skyBottom: '#ff007f',
+                    roadColor: ['#1a0b2e', '#2d1b4e'],
+                    ground: '#120024',
+                    grid: true, gridColor: '#ff00ff',
+                    fog: 0.05
+                };
+            }
+            // 100-120k: Matrix
+            else {
+                return {
+                    name: 'MATRIX',
+                    skyTop: '#000000', skyBottom: '#001a00',
+                    roadColor: ['#000', '#001100'],
+                    ground: '#000500',
+                    grid: true, gridColor: '#00ff00',
+                    fog: 0.1
+                };
+            }
+        };
+
+        const drawLandscape = (ctx: CanvasRenderingContext2D, theme: any) => {
+            // Ground (Base Layer)
+            ctx.fillStyle = theme.ground;
+            ctx.fillRect(0, HORIZON_Y, GAME_WIDTH, GAME_HEIGHT);
+
+            // Sky Gradient
             const grad = ctx.createLinearGradient(0, 0, 0, HORIZON_Y);
-            grad.addColorStop(0, '#020617');
-            grad.addColorStop(1, '#1e1b4b');
+            grad.addColorStop(0, theme.skyTop);
+            grad.addColorStop(1, theme.skyBottom);
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, GAME_WIDTH, HORIZON_Y + 5);
 
             // Parallax Offset
             const offset = (gameState.current.playerX * 30);
 
-            // --- INGOLSTADT SKYLINE ---
-            ctx.fillStyle = '#1e293b';
+            // --- INGOLSTADT SKYLINE (Always Visible) ---
+            // Adapt color based on theme
+            let buildingColor = '#1e293b';
+            let windowColor = '#fbbf24';
+            let detailColor = '#334155';
+
+            if (theme.name === 'MATRIX') { buildingColor = '#003300'; windowColor = '#00ff00'; detailColor = '#004400'; }
+            else if (theme.name === 'SYNTH') { buildingColor = '#240046'; windowColor = '#ff00ff'; detailColor = '#3c096c'; }
+            else if (theme.name === 'MARS') { buildingColor = '#450a0a'; windowColor = '#ef4444'; detailColor = '#7f1d1d'; }
+            else if (theme.name === 'DESERT') { buildingColor = '#431407'; windowColor = '#fdba74'; detailColor = '#78350f'; }
+            else if (theme.name === 'SNOW') { buildingColor = '#475569'; windowColor = '#94a3b8'; detailColor = '#64748b'; }
+
+            ctx.fillStyle = buildingColor;
 
             const baseY = HORIZON_Y + 2;
 
@@ -394,34 +699,63 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
             ctx.fillRect(factoryX, baseY - 60, 40, 60);
             ctx.fillRect(factoryX + 50, baseY - 40, 60, 40);
             // Chimneys
-            ctx.fillStyle = '#334155';
+            ctx.fillStyle = detailColor;
             ctx.fillRect(factoryX + 5, baseY - 100, 8, 40);
             ctx.fillRect(factoryX + 25, baseY - 90, 8, 30);
 
             // Audi Forum
             const museumX = 200 - offset;
-            ctx.fillStyle = '#475569';
+            ctx.fillStyle = buildingColor; // Use main color
             ctx.beginPath();
             ctx.ellipse(museumX, baseY - 70, 45, 10, 0, 0, Math.PI * 2);
             ctx.fill();
             ctx.fillRect(museumX - 45, baseY - 70, 90, 70);
 
-            // Glass Lines
-            ctx.fillStyle = 'rgba(255,255,255,0.05)';
+            // Glass Lines (Cyber look)
+            ctx.fillStyle = theme.name === 'CITY' ? 'rgba(255,255,255,0.05)' : windowColor;
+            ctx.globalAlpha = theme.name === 'CITY' ? 1.0 : 0.3;
             ctx.fillRect(museumX - 25, baseY - 70, 2, 70);
             ctx.fillRect(museumX, baseY - 70, 2, 70);
             ctx.fillRect(museumX + 25, baseY - 70, 2, 70);
+            ctx.globalAlpha = 1.0;
 
             // Piazza
             const adminX = 350 - offset;
-            ctx.fillStyle = '#334155';
+            ctx.fillStyle = detailColor;
             ctx.fillRect(adminX, baseY - 50, 80, 50);
-            ctx.fillStyle = '#fbbf24';
+            ctx.fillStyle = windowColor;
             ctx.fillRect(adminX + 10, baseY - 40, 5, 5);
             ctx.fillRect(adminX + 30, baseY - 40, 5, 5);
+
+            // Grid Effect (Render here to be behind road but over ground)
+            if (theme.grid) {
+                ctx.strokeStyle = theme.gridColor;
+                ctx.globalAlpha = 0.3;
+                ctx.lineWidth = 1;
+
+                // Vertical Lines (Perspective)
+                for (let lx = -20; lx <= 20; lx += 2) {
+                    const p1 = getScreenPos(lx, 3000);
+                    const p2 = getScreenPos(lx, 0);
+                    // Clip to horizon
+                    if (p1.y >= HORIZON_Y) {
+                        ctx.beginPath(); ctx.moveTo(p1.x, p1.y); ctx.lineTo(p2.x, p2.y); ctx.stroke();
+                    }
+                }
+                // Horizontal Lines (Moving)
+                const timeOffset = (performance.now() / 10) % 200;
+                for (let lz = 0; lz < 3000; lz += 200) {
+                    const z = lz - timeOffset;
+                    if (z < 0) continue;
+                    const pL = getScreenPos(-20, z);
+                    const pR = getScreenPos(20, z);
+                    ctx.beginPath(); ctx.moveTo(pL.x, pL.y); ctx.lineTo(pR.x, pR.y); ctx.stroke();
+                }
+                ctx.globalAlpha = 1.0;
+            }
         };
 
-        const drawRoad = (ctx: CanvasRenderingContext2D) => {
+        const drawRoad = (ctx: CanvasRenderingContext2D, theme: any) => {
             // Draw asphalt slightly wider than playable area (-1.2 to 1.2)
             const ROAD_EDGE = 1.2;
             const horizonL = getScreenPos(-ROAD_EDGE, 3000);
@@ -429,14 +763,10 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
             const bottomL = getScreenPos(-ROAD_EDGE, -200);
             const bottomR = getScreenPos(ROAD_EDGE, -200);
 
-            // Ground
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect(0, HORIZON_Y, GAME_WIDTH, GAME_HEIGHT);
-
             // Asphalt
             const roadGrad = ctx.createLinearGradient(0, HORIZON_Y, 0, GAME_HEIGHT);
-            roadGrad.addColorStop(0, '#111');
-            roadGrad.addColorStop(1, '#222');
+            roadGrad.addColorStop(0, theme.roadColor[0]);
+            roadGrad.addColorStop(1, theme.roadColor[1]);
             ctx.fillStyle = roadGrad;
 
             ctx.beginPath();
@@ -468,7 +798,12 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                     if (!isDashed) {
                         // Curbs
                         const isRed = (Math.floor((zStart + gameState.current.distance) / segmentLength) % 2 === 0);
-                        ctx.fillStyle = isRed ? '#ef4444' : '#f8fafc';
+                        if (theme.name === 'MATRIX') ctx.fillStyle = isRed ? '#00cc00' : '#003300';
+                        else if (theme.name === 'SYNTH') ctx.fillStyle = isRed ? '#ff00ff' : '#240046';
+                        else if (theme.name === 'MARS') ctx.fillStyle = isRed ? '#ef4444' : '#7f1d1d';
+                        else if (theme.name === 'DESERT') ctx.fillStyle = isRed ? '#f97316' : '#78350f';
+                        else if (theme.name === 'SNOW') ctx.fillStyle = isRed ? '#ef4444' : '#94a3b8';
+                        else ctx.fillStyle = isRed ? '#ef4444' : '#f8fafc';
                     }
 
                     ctx.beginPath();
@@ -480,9 +815,14 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                 }
             };
 
+            let centerColor = 'rgba(255,255,255,0.4)';
+            if (theme.name === 'MATRIX') centerColor = 'rgba(0,255,0,0.4)';
+            else if (theme.name === 'SYNTH') centerColor = 'rgba(255,0,255,0.4)';
+            else if (theme.name === 'MARS') centerColor = 'rgba(239,68,68,0.4)';
+
             drawLine(-1.0, false, '', 0.1); // Left Curb
             drawLine(1.0, false, '', 0.1); // Right Curb
-            drawLine(0, true, 'rgba(255,255,255,0.4)', 0.02); // Center Line
+            drawLine(0, true, centerColor, 0.02); // Center Line
         };
 
         const drawPlayer = (ctx: CanvasRenderingContext2D) => {
@@ -952,6 +1292,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
 
                     if (state.lives <= 0) {
                         state.isPlaying = false;
+                        state.isGameOver = true;
                         playSoundEffect('explode');
                         onGameOver({
                             score: Math.floor(state.distance + state.zombiesKilled * 100),
@@ -1215,6 +1556,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                         state.distance = Math.max(0, state.distance - 50);
                     } else {
                         state.isPlaying = false;
+                        state.isGameOver = true; // FORCE FLAG
                         onGameOver({
                             score: Math.floor(state.distance + state.zombiesKilled * 100),
                             distance: Math.floor(state.distance),
@@ -1272,8 +1614,9 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                     ctx.translate(dx, dy);
                     ctx.clearRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
-                    drawLandscape(ctx);
-                    drawRoad(ctx);
+                    const theme = getTheme(gameState.current.distance);
+                    drawLandscape(ctx, theme);
+                    drawRoad(ctx, theme);
                     drawEntities(ctx);
                     drawPlayer(ctx);
 
@@ -1311,7 +1654,8 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                 }
             }
 
-            updateEngineSound(gameState.current.speed);
+            updateAudio(gameState.current.speed, Math.abs(gameState.current.playerX - (gameState.current.keys.left ? -0.75 : (gameState.current.keys.right ? 0.75 : gameState.current.playerX))) > 0.01 && gameState.current.speed > 50);
+
             // Update Debug State
             // @ts-ignore
             window.debugState = {
