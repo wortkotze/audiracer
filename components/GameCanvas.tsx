@@ -103,7 +103,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
         particles: [] as Particle[],
         floatingTexts: [] as FloatingText[],
 
-        keys: { left: false, right: false, up: false, down: false, shoot: false },
+        keys: { left: false, right: false, up: false, down: false, shoot: false, handbrake: false, horn: false },
         lastTime: 0,
         lastShotTime: 0,
         startTime: performance.now(),
@@ -420,7 +420,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
         updateMusic();
     };
 
-    const playSoundEffect = (type: 'shoot' | 'crash' | 'pickup' | 'empty' | 'explode') => {
+    const playSoundEffect = (type: 'shoot' | 'crash' | 'pickup' | 'empty' | 'explode' | 'horn') => {
         if (!isSfxEnabled || !audioCtxRef.current) return;
         if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume().catch(() => { });
 
@@ -471,6 +471,33 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
             gain.gain.linearRampToValueAtTime(0, t + 0.5);
             osc.start(t);
             osc.stop(t + 0.5);
+        } else if (type === 'horn') {
+            // Car Horn: Dual tone dissonance
+            const osc2 = audioCtxRef.current.createOscillator();
+            const gain2 = audioCtxRef.current.createGain();
+
+            osc.type = 'sawtooth';
+            osc2.type = 'sawtooth';
+
+            // Tone A (Low)
+            osc.frequency.setValueAtTime(300, t);
+            // Tone B (High - slightly dissonant)
+            osc2.frequency.setValueAtTime(370, t);
+
+            // Mix
+            gain.gain.setValueAtTime(0.1, t);
+            gain.gain.linearRampToValueAtTime(0, t + 0.4);
+
+            gain2.gain.setValueAtTime(0.1, t);
+            gain2.gain.linearRampToValueAtTime(0, t + 0.4);
+
+            osc2.connect(gain2);
+            gain2.connect(audioCtxRef.current.destination);
+
+            osc.start(t);
+            osc.stop(t + 0.4);
+            osc2.start(t);
+            osc2.stop(t + 0.4);
         }
     };
 
@@ -516,7 +543,7 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
             projectiles: [],
             particles: [],
             floatingTexts: [],
-            keys: { left: false, right: false, up: false, down: false, shoot: false },
+            keys: { left: false, right: false, up: false, down: false, shoot: false, handbrake: false, horn: false },
             lastTime: 0,
             lastShotTime: 0,
             startTime: performance.now(),
@@ -535,7 +562,13 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                 case 'ArrowRight': gameState.current.keys.right = true; break;
                 case 'ArrowUp': gameState.current.keys.up = true; break;
                 case 'ArrowDown': gameState.current.keys.down = true; break;
-                case ' ': gameState.current.keys.shoot = true; break;
+                case 'Shift': gameState.current.keys.shoot = true; break;
+                case ' ': gameState.current.keys.handbrake = true; break;
+                case 'h':
+                case 'H':
+                    if (!gameState.current.keys.horn) playSoundEffect('horn');
+                    gameState.current.keys.horn = true;
+                    break;
             }
         };
 
@@ -546,7 +579,10 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                 case 'ArrowRight': gameState.current.keys.right = false; break;
                 case 'ArrowUp': gameState.current.keys.up = false; break;
                 case 'ArrowDown': gameState.current.keys.down = false; break;
-                case ' ': gameState.current.keys.shoot = false; break;
+                case 'Shift': gameState.current.keys.shoot = false; break;
+                case ' ': gameState.current.keys.handbrake = false; break;
+                case 'h':
+                case 'H': gameState.current.keys.horn = false; break;
             }
         };
 
@@ -1183,14 +1219,29 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
             ctx.font = "bold 40px 'Orbitron'";
             ctx.fillStyle = '#fff';
             ctx.textAlign = 'right';
-            ctx.fillText(`${Math.floor(gameState.current.speed)}`, GAME_WIDTH - 20, 50);
+
+            // CLAMP SPEED TO MAX with HYSTERESIS
+            // If speed is within 1% of MAX, just show MAX to prevent jitter (e.g. 299 <-> 300)
+            const MAX_PHYSICS_SPEED = carModel.stats.speed * 3.2;
+            const MAX_DISPLAY_SPEED = Math.floor(MAX_PHYSICS_SPEED);
+
+            let currentSpeed = gameState.current.speed;
+            let displaySpeed = Math.floor(currentSpeed);
+
+            if (currentSpeed > MAX_PHYSICS_SPEED * 0.99) {
+                displaySpeed = MAX_DISPLAY_SPEED;
+            }
+
+            // Pad speed to 3 digits
+            ctx.fillText(`${displaySpeed.toString().padStart(3, '0')}`, GAME_WIDTH - 20, 60);
             ctx.font = "14px 'Orbitron'";
-            ctx.fillText("KM/H", GAME_WIDTH - 20, 65);
+            ctx.fillText("KM/H", GAME_WIDTH - 20, 90);
 
             // Distance
             ctx.font = "20px 'Orbitron'";
             ctx.fillStyle = '#aaa';
-            ctx.fillText(`${Math.floor(gameState.current.distance)}m`, GAME_WIDTH - 20, 80);
+            // Pad distance to 6 digits
+            ctx.fillText(`${Math.floor(gameState.current.distance).toString().padStart(6, '0')}m`, GAME_WIDTH - 20, 120);
 
             // Resource Bar (Energy or Fuel) - MOVED TO BOTTOM LEFT
             const energy = gameState.current.energy;
@@ -1308,8 +1359,17 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
 
             // Steering - Clamped to 0.75 to ensure car stays within screen bounds
             if (!state.isCrashing) {
-                if (state.keys.left) state.playerX = Math.max(-0.75, state.playerX - HANDLING_SPEED * deltaTime);
-                if (state.keys.right) state.playerX = Math.min(0.75, state.playerX + HANDLING_SPEED * deltaTime);
+                // Handbrake Handling: Turning is faster but lose control (slide)
+                const turnSpeed = state.keys.handbrake ? HANDLING_SPEED * 1.5 : HANDLING_SPEED;
+
+                if (state.keys.left) state.playerX = Math.max(-0.75, state.playerX - turnSpeed * deltaTime);
+                if (state.keys.right) state.playerX = Math.min(0.75, state.playerX + turnSpeed * deltaTime);
+
+                // Handbrake Drag & Sound
+                if (state.keys.handbrake) {
+                    state.speed = Math.max(0, state.speed * 0.96); // Strong deceleration
+                    if (state.speed > 50) updateTireSound(state.speed * 1.5, true); // Force tire screech
+                }
             } else {
                 state.playerX += state.crashDriftDir * (0.02 * (state.speed / 100)) * deltaTime;
             }

@@ -7,6 +7,7 @@ import { getPostRaceAnalysis } from './services/geminiService';
 import { authService, UserProfile } from './services/authService';
 import { multiplayerService, PlayerState } from './services/multiplayerService';
 import { highscoreService } from './services/highscoreService';
+import pixelLogo from './assets/pixel_logo.png';
 
 const App = () => {
   const [gameState, setGameState] = useState<GameState['screen']>('LOGIN');
@@ -99,7 +100,7 @@ const App = () => {
     if (isMultiplayer) {
       setGameState('LOBBY');
     } else {
-      setGameState('RACING');
+      handleStartRaceSequence();
     }
   };
 
@@ -367,12 +368,8 @@ const App = () => {
       {gameState === 'START' && (
         <div className="text-center p-8 animate-fadeIn max-w-md relative z-10">
           {/* Logo: 4 Rectangles */}
-          <svg className="w-32 h-12 mx-auto mb-8 text-white" viewBox="0 0 100 35" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="5" y="5" width="12" height="25" />
-            <rect x="25" y="5" width="12" height="25" />
-            <rect x="45" y="5" width="12" height="25" />
-            <rect x="65" y="5" width="12" height="25" />
-          </svg>
+          {/* Logo: Pixel Art */}
+          <img src={pixelLogo} alt="Retro Racer Logo" className="w-64 h-auto mx-auto mb-8 rendering-pixelated" />
 
           <h1 className="text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400">
             RETRO RACER
@@ -398,7 +395,7 @@ const App = () => {
           </div>
 
           <div className="mt-8 text-xs text-audi-grey">
-            © 2024 Audi Retro Concept. Unofficial Fan Art.
+            {import.meta.env.VITE_FOOTER_TEXT || "© 2024 Audi Retro Concept. Unofficial Fan Art."}
           </div>
         </div>
       )}
@@ -646,8 +643,30 @@ const App = () => {
                       }`}></div>
                   ))}
                 </div>
-                <div className="text-8xl font-black text-white font-mono animate-ping">
+                <div className="text-8xl font-black text-white font-mono animate-ping mb-12">
                   {countdown}
+                </div>
+
+                {/* CONTROLS HELP */}
+                <div className="grid grid-cols-2 gap-x-12 gap-y-4 text-left font-pixel text-xl animate-fadeIn">
+                  <div className="group">
+                    <span className="text-audi-red mr-3">ARROWS</span>
+                    <span className="text-white/80 group-hover:text-white transition-colors">DRIVE</span>
+                  </div>
+                  <div className="group">
+                    <span className="text-audi-red mr-3">SPACE</span>
+                    <span className="text-white/80 group-hover:text-white transition-colors">DRIFT</span>
+                  </div>
+                  <div className="group">
+                    <span className="text-audi-red mr-3">H</span>
+                    <span className="text-white/80 group-hover:text-white transition-colors">HORN</span>
+                  </div>
+                  {selectedCar?.type === EngineType.EV && (
+                    <div className="group">
+                      <span className="text-blue-400 mr-3">SHIFT</span>
+                      <span className="text-white/80 group-hover:text-white transition-colors">SHOOT</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
