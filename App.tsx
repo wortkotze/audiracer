@@ -632,6 +632,7 @@ const App = () => {
               isRaceStarted={gameState === 'RACING'}
               isSfxEnabled={isSfxEnabled}
               isMusicEnabled={isMusicEnabled}
+              countdown={countdown}
             />
 
             {/* COUNTDOWN OVERLAY */}
