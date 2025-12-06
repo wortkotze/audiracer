@@ -11,6 +11,7 @@ interface GameCanvasProps {
     isRaceStarted: boolean;
     isSfxEnabled: boolean;
     isMusicEnabled: boolean;
+    countdown: number;
 }
 
 type EntityType = 'enemy_bmw' | 'enemy_merc' | 'enemy_toyota' | 'zombie' | 'projectile' | 'battery' | 'fuel';
@@ -43,7 +44,7 @@ interface FloatingText {
     color: string;
 }
 
-export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, onGameOver, opponentState, onProgress, isRaceStarted = true, isSfxEnabled = true, isMusicEnabled = true }) => {
+export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, onGameOver, opponentState, onProgress, isRaceStarted = true, isSfxEnabled = true, isMusicEnabled = true, countdown }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const frameIdRef = useRef<number>(0);
 
@@ -58,6 +59,8 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
     const engineOscRef = useRef<OscillatorNode | null>(null);
     const engineGainRef = useRef<GainNode | null>(null);
     const engineFilterRef = useRef<BiquadFilterNode | null>(null);
+    const lastGearRef = useRef(1); // Track gear for shift sounds
+    const lastShiftTimeRef = useRef(0); // Track time of last shift to protect audio envelope
 
     // Music Refs
     const musicOscRef = useRef<OscillatorNode | null>(null);
@@ -208,18 +211,101 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
         }
     };
 
-    // Handle Sound Toggles
+    // Countdown Audio
     useEffect(() => {
-        if (audioCtxRef.current) {
+        // Ensure audio is initialized before trying to beep
+        if (isSfxEnabled && !audioCtxRef.current) {
+            initAudio();
+        }
+
+        if (!isSfxEnabled || !audioCtxRef.current) return;
+
+        // 3... 2... 1...
+        if (countdown > 0 && countdown <= 3) {
+            if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume().catch(() => { });
+
+            const osc = audioCtxRef.current.createOscillator();
+            const gain = audioCtxRef.current.createGain();
+            const t = audioCtxRef.current.currentTime;
+
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(440, t); // A4
+            osc.frequency.exponentialRampToValueAtTime(880, t + 0.1);
+
+            gain.gain.setValueAtTime(0.1, t);
+            gain.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+
+            osc.connect(gain);
+            gain.connect(audioCtxRef.current.destination);
+
+            osc.start(t);
+            osc.stop(t + 0.3);
+        }
+        // GO! (Race just started)
+        else if (countdown === 0 && isRaceStarted) {
+            if (audioCtxRef.current.state === 'suspended') audioCtxRef.current.resume().catch(() => { });
+
+            const osc = audioCtxRef.current.createOscillator();
+            const gain = audioCtxRef.current.createGain();
+            const t = audioCtxRef.current.currentTime;
+
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(880, t); // High Pitch
+            osc.frequency.exponentialRampToValueAtTime(220, t + 0.4); // Down sweep
+
+            gain.gain.setValueAtTime(0.2, t);
+            gain.gain.linearRampToValueAtTime(0.001, t + 0.5);
+
+            osc.connect(gain);
+            gain.connect(audioCtxRef.current.destination);
+
+            osc.start(t);
+            osc.stop(t + 0.5);
+        }
+
+    }, [countdown, isRaceStarted, isSfxEnabled]);
+
+
+    // Handle Sound Toggles & Cleanup & Visibility
+    useEffect(() => {
+        // Init Audio immediately on mount (for Countdown sounds)
+        initAudio();
+
+        const updateAudioState = () => {
+            if (!audioCtxRef.current) return;
+
+            // If document is hidden, always suspend
+            if (document.hidden) {
+                audioCtxRef.current.suspend().catch(() => { });
+                return;
+            }
+
+            // If visible, resume if enabled
             if (isSfxEnabled || isMusicEnabled) {
                 audioCtxRef.current.resume().catch(() => { });
             } else {
                 audioCtxRef.current.suspend().catch(() => { });
             }
-        }
+        };
+
+        // Initial State Check
+        updateAudioState();
+
         // Mute Engine/Tire if SFX disabled
-        if (engineGainRef.current) engineGainRef.current.gain.value = isSfxEnabled ? 0.015 : 0; // LOWERED BASE VOLUME FURTHER
+        if (engineGainRef.current) engineGainRef.current.gain.value = isSfxEnabled ? 0.015 : 0;
         if (tireGainRef.current) tireGainRef.current.gain.value = 0;
+
+        // Visibility Listener
+        document.addEventListener('visibilitychange', updateAudioState);
+
+        // CLEANUP ON UNMOUNT
+        return () => {
+            document.removeEventListener('visibilitychange', updateAudioState);
+            if (audioCtxRef.current) {
+                audioCtxRef.current.close().catch(e => console.error("Error closing AudioContext:", e));
+                audioCtxRef.current = null;
+            }
+        };
     }, [isSfxEnabled, isMusicEnabled]);
 
     const updateEngineSound = (speed: number) => {
@@ -246,12 +332,63 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
             // EV: Linear, one gear
             rpm = speed / 300;
         } else {
-            // ICE: 5 Gears
-            if (speed < 60) { rpm = speed / 60; gear = 1; }
-            else if (speed < 110) { rpm = (speed - 60) / 50; gear = 2; }
-            else if (speed < 160) { rpm = (speed - 110) / 50; gear = 3; }
-            else if (speed < 220) { rpm = (speed - 160) / 60; gear = 4; }
-            else { rpm = (speed - 220) / 80; gear = 5; } // Top gear
+            // ICE: 5 Gears Logic with Hysteresis
+            let targetGear = 1;
+            if (speed < 60) targetGear = 1;
+            else if (speed < 110) targetGear = 2;
+            else if (speed < 160) targetGear = 3;
+            else if (speed < 220) targetGear = 4;
+            else targetGear = 5;
+
+            // Hysteresis: If we shifted recently (< 1.0s), lock the gear
+            // This prevents "fluttering" between gears at boundary speeds (e.g. 60km/h)
+            // Exception: If stopping (speed < 5), allow downshift immediately
+            if ((t - lastShiftTimeRef.current < 1.0) && speed > 5) {
+                gear = lastGearRef.current;
+            } else {
+                gear = targetGear;
+            }
+
+            // Calculate RPM based on the solidified Gear
+            if (gear === 1) rpm = speed / 60;
+            else if (gear === 2) rpm = (speed - 60) / 50;
+            else if (gear === 3) rpm = (speed - 110) / 50;
+            else if (gear === 4) rpm = (speed - 160) / 60;
+            else rpm = (speed - 220) / 80;
+
+            // GEAR SHIFT CLUNK logic
+
+            // GEAR SHIFT CLUNK logic (BOOSTED)
+            if (gear !== lastGearRef.current) {
+                lastGearRef.current = gear;
+                lastShiftTimeRef.current = t; // Mark shift start
+
+                // 1. Duck Engine Volume (Clutch) - momentary silence
+                if (engineGainRef.current) {
+                    engineGainRef.current.gain.cancelScheduledValues(t);
+                    engineGainRef.current.gain.setValueAtTime(engineGainRef.current.gain.value, t); // Start from current
+                    engineGainRef.current.gain.linearRampToValueAtTime(0.002, t + 0.05); // Drop fast
+                    engineGainRef.current.gain.linearRampToValueAtTime(0.015, t + 0.2); // Ramp back up
+                }
+
+                // 2. Play Clunk Sound (Balanced)
+                const clunkOsc = audioCtxRef.current.createOscillator();
+                const clunkGain = audioCtxRef.current.createGain();
+
+                // Triangle wave for softer "mechanical" thud
+                clunkOsc.type = 'triangle';
+                clunkOsc.frequency.setValueAtTime(150, t);
+                clunkOsc.frequency.exponentialRampToValueAtTime(50, t + 0.15);
+
+                // Middle ground volume (0.4 was too loud, 0.1 too quiet)
+                clunkGain.gain.setValueAtTime(0.25, t);
+                clunkGain.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+
+                clunkOsc.connect(clunkGain);
+                clunkGain.connect(audioCtxRef.current.destination);
+                clunkOsc.start(t);
+                clunkOsc.stop(t + 0.15);
+            }
         }
 
         // Clamp RPM
@@ -264,19 +401,33 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
             engineFilterRef.current.frequency.setTargetAtTime(800 + (speed / 300 * 1000), t, 0.1);
         } else {
             // ICE: Pitch follows RPM
-            const baseFreq = 60 + (gear * 10); // Higher gears start slightly higher pitch? Or lower? Real cars RPM drops.
-            // Let's model RPM directly: Low RPM = 50Hz, High RPM = 150Hz
-            const targetFreq = 50 + (rpm * 150);
+            // Aggressive shift logic: 60Hz idle to 350Hz redline
+            const targetFreq = 60 + (rpm * 290);
 
-            engineOscRef.current.frequency.setTargetAtTime(targetFreq, t, 0.1);
+            // Shorter time constant for punchy shifts (0.1 -> 0.02)
+            // But keep filter slightly smoother for body
+            engineOscRef.current.frequency.setTargetAtTime(targetFreq, t, 0.02);
             // Filter mimics valve opening - opens wide at high RPM
-            engineFilterRef.current.frequency.setTargetAtTime(200 + (rpm * 800), t, 0.1);
+            engineFilterRef.current.frequency.setTargetAtTime(200 + (rpm * 1000), t, 0.05);
         }
 
-        // Volume ducking when stopped
-        const targetGain = speed > 5 ? 0.015 : 0.002; // LOWERED VOLUME to SUBTLE
-        if (engineGainRef.current) {
-            engineGainRef.current.gain.setTargetAtTime(targetGain, t, 0.2);
+        // Volume ducking when stopped (Only affect if not in middle of shift)
+        // CHECK: Is a shift happening right now? (allow 0.2s for shift envelope)
+        const isShifting = (t - lastShiftTimeRef.current) < 0.2;
+
+        if (!isShifting) {
+            if (Math.abs(speed - 0) < 0.1) {
+                const targetGain = 0.002;
+                if (engineGainRef.current) {
+                    engineGainRef.current.gain.setTargetAtTime(targetGain, t, 0.5);
+                }
+            } else {
+                // Normal volume tracking
+                const targetGain = 0.015;
+                if (engineGainRef.current) {
+                    engineGainRef.current.gain.setTargetAtTime(targetGain, t, 0.2);
+                }
+            }
         }
     };
 
@@ -1292,13 +1443,38 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                 const delta = Math.floor(gameState.current.distance - currentOpponent.distance);
                 const isAhead = delta >= 0;
                 const absDelta = Math.abs(delta);
+                const deltaText = `${isAhead ? '+' : '-'}${absDelta}m`;
+                const labelText = `VS ${currentOpponent.name.toUpperCase()}`;
+
+                const centerX = GAME_WIDTH / 2;
+                const topY = 80;
 
                 // Pill Background
-                ctx.fillStyle = '#000';
+                ctx.save();
+                ctx.translate(centerX, topY);
+
+                // Background Styling
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
                 ctx.beginPath();
-                ctx.roundRect(GAME_WIDTH - 140, 90, 120, 30, 15);
+                ctx.roundRect(-100, -35, 200, 70, 10);
                 ctx.fill();
-                ctx.fillText(isAhead ? "AHEAD" : "BEHIND", GAME_WIDTH / 2, 55); // Above the pill
+
+                // Border Color based on status
+                ctx.strokeStyle = isAhead ? '#4ade80' : '#ef4444';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Delta Text
+                ctx.font = "bold 40px 'Orbitron'";
+                ctx.fillStyle = isAhead ? '#4ade80' : '#ef4444';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(deltaText, 0, -5);
+
+                // Opponent Name Label
+                ctx.font = "bold 12px sans-serif";
+                ctx.fillStyle = '#cbd5e1'; // Light grey
+                ctx.fillText(labelText, 0, 25);
 
                 ctx.restore();
             }
@@ -1410,8 +1586,15 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
 
             // --- 2. Resources (Energy or Fuel) ---
             if (!state.isCrashing && state.speed > 5) {
+                // Progressive Difficulty: Consumption increases with distance
+                // At 0km: 1x, at 20km: 2x, at 40km: 3x
+                const difficultyMultiplier = 1 + (state.distance / 20000);
+
                 // ICE cars consume fuel, EVs consume Battery
-                state.energy -= (state.speed / 500000) * deltaTime;
+                // applied the multiplier to the drain rate
+                // INCREASED BASE CONSUMPTION: 500k -> 300k (60% faster drain)
+                state.energy -= (state.speed / 300000) * deltaTime * difficultyMultiplier;
+
                 if (state.energy <= 0) {
                     playSoundEffect('empty');
                     state.gameOverReason = carModel.type === EngineType.EV ? 'EMPTY_BATTERY' : 'EMPTY_FUEL';
@@ -1531,13 +1714,13 @@ export const GameCanvas: React.FC<GameCanvasProps> = ({ carModel, playerConfig, 
                 if (checkHit(state.playerX, PLAYER_Z, ent.lane, ent.z, threshold)) {
                     if (isPickup) {
                         ent.active = false;
-                        state.energy = Math.min(100, state.energy + 25);
+                        state.energy = Math.min(100, state.energy + 5); // Changed from 25 to 5
                         playSoundEffect('pickup');
                         // Visual Feedback
                         state.floatingTexts.push({
                             x: getScreenPos(state.playerX, PLAYER_Z).x,
                             y: getScreenPos(state.playerX, PLAYER_Z).y - 50,
-                            text: carModel.type === EngineType.EV ? '+25% CHARGE' : '+25% FUEL',
+                            text: carModel.type === EngineType.EV ? '+5% CHARGE' : '+5% FUEL', // Changed text
                             life: 1.0,
                             color: carModel.type === EngineType.EV ? '#4ade80' : '#f87171'
                         });
