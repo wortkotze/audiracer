@@ -343,6 +343,14 @@ const App = () => {
     }
   };
 
+  const handleStartMultiplayerRace = () => {
+    if (lobbyId) {
+      multiplayerService.updateGlobalStatus('RACING', lobbyId);
+      multiplayerService.startRace(lobbyId);
+      handleStartRaceSequence();
+    }
+  };
+
   return (
     <div className="h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden">
 
@@ -598,20 +606,35 @@ const App = () => {
                     {players.length < 2 && (
                       <div className="flex items-center gap-2 opacity-50">
                         <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
-                        <span className="text-gray-400 italic">Waiting for rival...</span>
+                        <span className="text-gray-500 italic">Waiting for opponent...</span>
                       </div>
                     )}
                   </div>
                 </div>
 
-                <Button onClick={() => {
-                  multiplayerService.updateGlobalStatus('RACING', lobbyId);
-                  multiplayerService.startRace(lobbyId);
-                  handleStartRaceSequence();
-                }} fullWidth className="bg-audi-red text-white animate-pulse">
-                  START ENGINES
-                </Button>
-                <p className="text-[10px] text-audi-grey mt-2">Share this code with your rival</p>
+                {/* PRE-RACE CHAT or STATUS */}
+                <div className="mb-8 p-4 bg-black/40 rounded min-h-[100px] flex items-center justify-center">
+                  <p className="text-audi-grey text-sm animate-pulse">
+                    {players.length > 1 ? 'RACE READY TO START' : 'WAITING FOR DRIVERS...'}
+                  </p>
+                </div>
+
+                {/* Only Host can Start */}
+                {user?.id === players[0]?.id && (
+                  <div className="space-y-2">
+                    <Button
+                      onClick={handleStartMultiplayerRace}
+                      fullWidth
+                      className={`bg-audi-red text-white hover:bg-red-600 ${players.length < 2 ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      disabled={players.length < 2}
+                    >
+                      START ENGINES
+                    </Button>
+                    {players.length < 2 && (
+                      <p className="text-[10px] text-red-400">At least 2 players required to start.</p>
+                    )}
+                  </div>
+                )}<p className="text-[10px] text-audi-grey mt-2">Share this code with your rival</p>
               </div>
             )}
           </div>

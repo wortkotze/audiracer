@@ -1,44 +1,1058 @@
 
-[1m[46m RUN [49m[22m [36mv4.0.15 [39m[90m/Users/skfyui1/Documents/GitHub/audiracer/audiracer[39m
+[1m[46m RUN [49m[22m [36mv4.0.15 [39m[90m/Users/stephanstrecker/Documents/GitHub/audiracer[39m
 
-[90mstdout[2m | components/GameCanvas.test.tsx
+[90mstdout[2m | App.test.tsx
 [22m[39mvitest.setup.ts loaded
 
- [32m✓[39m components/GameCanvas.test.tsx[2m:141:5[22m[2m > [22mGameCanvas[2m > [22mrenders without crashing[32m 9[2mms[22m[39m
- [32m✓[39m components/GameCanvas.test.tsx[2m:152:5[22m[2m > [22mGameCanvas[2m > [22minitializes audio context on user interaction[32m 1[2mms[22m[39m
- [32m✓[39m components/GameCanvas.test.tsx[2m:165:5[22m[2m > [22mGameCanvas[2m > [22mruns game loop and draws to canvas[32m 2[2mms[22m[39m
- [32m✓[39m components/GameCanvas.test.tsx[2m:186:5[22m[2m > [22mGameCanvas[2m > [22mhandles key events for movement[32m 1[2mms[22m[39m
- [31m×[39m components/GameCanvas.test.tsx[2m:203:5[22m[2m > [22mGameCanvas[2m > [22mspawns enemy and handles 3 lives before game over[32m 243[2mms[22m[39m
-[31m   → expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+[90mstderr[2m | App.test.tsx[2m:101:5[22m[2m[2m > [22m[2mApp Component[2m > [22m[2mrenders the start screen initially
+[22m[39mAn update to App inside a test was not wrapped in act(...).
 
-Number of calls: [1m0[22m
-[31m[39m
- [32m✓[39m components/GameCanvas.test.tsx[2m:270:5[22m[2m > [22mGameCanvas[2m > [22mcollects battery pickup[32m 123[2mms[22m[39m
- [32m✓[39m components/GameCanvas.test.tsx[2m:322:5[22m[2m > [22mGameCanvas[2m > [22mfires projectile and destroys enemy[32m 38[2mms[22m[39m
+When testing, code that causes React state updates should be wrapped into act(...):
 
-[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 1 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
 
-[41m[1m FAIL [22m[49m components/GameCanvas.test.tsx[2m:203:5[22m[2m > [22mGameCanvas[2m > [22mspawns enemy and handles 3 lives before game over
-[31m[1mAssertionError[22m: expected "vi.fn()" to be called with arguments: [ Array(1) ][90m
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
 
-Number of calls: [1m0[22m
-[31m[39m
-[36m [2m❯[22m components/GameCanvas.test.tsx:[2m265:32[22m[39m
-    [90m263| [39m        [90m// Crash 3 (Lives 1 -> 0) -> Game Over[39m
-    [90m264| [39m        [34mforceCrash[39m()[33m;[39m
-    [90m265| [39m        expect(mockOnGameOver).toHaveBeenCalledWith(expect.objectConta…
+[90mstderr[2m | App.test.tsx[2m:107:5[22m[2m[2m > [22m[2mApp Component[2m > [22m[2mtransitions to garage when enter button is clicked
+[22m[39mAn update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | App.test.tsx[2m:114:5[22m[2m[2m > [22m[2mApp Component[2m > [22m[2mtransitions to racing state when race starts
+[22m[39mAn update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | App.test.tsx[2m:127:5[22m[2m[2m > [22m[2mApp Component[2m > [22m[2mtransitions to game over state and displays stats
+[22m[39mAn update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | App.test.tsx[2m:146:5[22m[2m[2m > [22m[2mApp Component[2m > [22m[2mresets to garage when race again is clicked
+[22m[39mAn update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | App.test.tsx[2m:165:5[22m[2m[2m > [22m[2mApp Component[2m > [22m[2mdisplays REMATCH and LOBBY buttons in multiplayer game over
+[22m[39mAn update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+[90mstderr[2m | App.test.tsx[2m:207:5[22m[2m[2m > [22m[2mApp Component[2m > [22m[2mdisables "START ENGINES" button when only 1 player is in lobby
+[22m[39mAn update to App inside a test was not wrapped in act(...).
+
+When testing, code that causes React state updates should be wrapped into act(...):
+
+act(() => {
+  /* fire events that update state */
+});
+/* assert on the output */
+
+This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+ [31m×[39m App.test.tsx[2m:101:5[22m[2m > [22mApp Component[2m > [22mrenders the start screen initially[32m 21[2mms[22m[39m
+[31m   → Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m App.test.tsx[2m:107:5[22m[2m > [22mApp Component[2m > [22mtransitions to garage when enter button is clicked[32m 3[2mms[22m[39m
+[31m   → Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m App.test.tsx[2m:114:5[22m[2m > [22mApp Component[2m > [22mtransitions to racing state when race starts[32m 2[2mms[22m[39m
+[31m   → Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m App.test.tsx[2m:127:5[22m[2m > [22mApp Component[2m > [22mtransitions to game over state and displays stats[32m 2[2mms[22m[39m
+[31m   → Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m App.test.tsx[2m:146:5[22m[2m > [22mApp Component[2m > [22mresets to garage when race again is clicked[32m 2[2mms[22m[39m
+[31m   → Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m App.test.tsx[2m:165:5[22m[2m > [22mApp Component[2m > [22mdisplays REMATCH and LOBBY buttons in multiplayer game over[32m 3[2mms[22m[39m
+[31m   → Unable to find an element with the placeholder text of: CODE
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"w-full h-[100dvh] max-w-lg relative"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"absolute top-4 left-4 z-50"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"text-white text-sm hover:text-audi-red"[31m
+          [36m>[31m
+            [0m← BACK[0m
+          [36m</button>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mdata-testid[31m=[32m"garage-component"[31m
+        [36m>[31m
+          [36m<button>[31m
+            [0mStart Race Mock[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+ [31m×[39m App.test.tsx[2m:207:5[22m[2m > [22mApp Component[2m > [22mdisables "START ENGINES" button when only 1 player is in lobby[32m 2[2mms[22m[39m
+[31m   → Unable to find an element with the placeholder text of: CODE
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"w-full h-[100dvh] max-w-lg relative"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"absolute top-4 left-4 z-50"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"text-white text-sm hover:text-audi-red"[31m
+          [36m>[31m
+            [0m← BACK[0m
+          [36m</button>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mdata-testid[31m=[32m"garage-component"[31m
+        [36m>[31m
+          [36m<button>[31m
+            [0mStart Race Mock[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[39m[1m[41m Failed Tests 7 [49m[22m[31m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[41m[1m FAIL [22m[49m App.test.tsx[2m:101:5[22m[2m > [22mApp Component[2m > [22mrenders the start screen initially
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m App.test.tsx:[2m104:23[22m[39m
+    [90m102| [39m        [34mrender[39m([33m<[39m[33mApp[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m103| [39m        [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'RETRO RACER'[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m104| [39m        [34mexpect[39m(screen[33m.[39m[34mgetByText[39m([32m'ENTER GARAGE'[39m))[33m.[39m[34mtoBeInTheDocument[39m()[33m;[39m
+    [90m   | [39m                      [31m^[39m
+    [90m105| [39m    })[33m;[39m
+    [90m106| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m App.test.tsx[2m:107:5[22m[2m > [22mApp Component[2m > [22mtransitions to garage when enter button is clicked
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m App.test.tsx:[2m109:36[22m[39m
+    [90m107| [39m    [34mit[39m([32m'transitions to garage when enter button is clicked'[39m[33m,[39m () [33m=>[39m {
+    [90m108| [39m        [34mrender[39m([33m<[39m[33mApp[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m109| [39m        [35mconst[39m enterButton [33m=[39m screen[33m.[39m[34mgetByText[39m([32m'ENTER GARAGE'[39m)[33m;[39m
+    [90m   | [39m                                   [31m^[39m
+    [90m110| [39m        fireEvent[33m.[39m[34mclick[39m(enterButton)[33m;[39m
+    [90m111| [39m        expect(screen.getByTestId('garage-component')).toBeInTheDocume…
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m App.test.tsx[2m:114:5[22m[2m > [22mApp Component[2m > [22mtransitions to racing state when race starts
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m App.test.tsx:[2m117:32[22m[39m
+    [90m115| [39m        [34mrender[39m([33m<[39m[33mApp[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m116| [39m        [90m// Navigate to Garage[39m
+    [90m117| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'ENTER GARAGE'[39m))[33m;[39m
     [90m   | [39m                               [31m^[39m
-    [90m266| [39m            reason[33m:[39m [32m'CRASH'[39m
-    [90m267| [39m        }))[33m;[39m
+    [90m118| [39m
+    [90m119| [39m        [90m// Start Race[39m
 
-[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯[22m[39m
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m App.test.tsx[2m:127:5[22m[2m > [22mApp Component[2m > [22mtransitions to game over state and displays stats
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m App.test.tsx:[2m130:32[22m[39m
+    [90m128| [39m        [34mrender[39m([33m<[39m[33mApp[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m129| [39m        [90m// Navigate to Garage -> Race[39m
+    [90m130| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'ENTER GARAGE'[39m))[33m;[39m
+    [90m   | [39m                               [31m^[39m
+    [90m131| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'Start Race Mock'[39m))[33m;[39m
+    [90m132| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m App.test.tsx[2m:146:5[22m[2m > [22mApp Component[2m > [22mresets to garage when race again is clicked
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"text-center p-8 animate-fadeIn max-w-md relative z-10"[31m
+      [36m>[31m
+        [36m<img[31m
+          [33malt[31m=[32m"Retro Racer Logo"[31m
+          [33mclass[31m=[32m"w-64 h-auto mx-auto mb-8 rendering-pixelated"[31m
+          [33msrc[31m=[32m"/assets/pixel_logo.png"[31m
+        [36m/>[31m
+        [36m<h1[31m
+          [33mclass[31m=[32m"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400"[31m
+        [36m>[31m
+          [0mRETRO RACER[0m
+        [36m</h1>[31m
+        [36m<p[31m
+          [33mclass[31m=[32m"text-audi-grey mb-4 text-lg"[31m
+        [36m>[31m
+          [0mWelcome, [0m
+          [36m<span[31m
+            [33mclass[31m=[32m"text-white font-bold"[31m
+          [36m>[31m
+            [0mUser[0m
+          [36m</span>[31m
+        [36m</p>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"flex flex-col gap-4"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mSOLO RACE[0m
+          [36m</button>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none"[31m
+            [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+          [36m>[31m
+            [0mMULTIPLAYER[0m
+          [36m</button>[31m
+          [36m<div[31m
+            [33mclass[31m=[32m"flex gap-2"[31m
+          [36m>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mLEADERBOARD[0m
+            [36m</button>[31m
+            [36m<button[31m
+              [33mclass[31m=[32m"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs"[31m
+              [33mstyle[31m=[32m"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);"[31m
+            [36m>[31m
+              [0mSETTINGS[0m
+            [36m</button>[31m
+          [36m</div>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"mt-8 text-xs text-audi-grey"[31m
+        [36m>[31m
+          [0m© 2024 Audi Retro Concept. Unofficial Fan Art.[0m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m App.test.tsx:[2m149:32[22m[39m
+    [90m147| [39m        [34mrender[39m([33m<[39m[33mApp[39m [33m/[39m[33m>[39m)[33m;[39m
+    [90m148| [39m        [90m// Go to Game Over[39m
+    [90m149| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'ENTER GARAGE'[39m))[33m;[39m
+    [90m   | [39m                               [31m^[39m
+    [90m150| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'Start Race Mock'[39m))[33m;[39m
+    [90m151| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'Trigger Game Over'[39m))[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m App.test.tsx[2m:165:5[22m[2m > [22mApp Component[2m > [22mdisplays REMATCH and LOBBY buttons in multiplayer game over
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the placeholder text of: CODE
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"w-full h-[100dvh] max-w-lg relative"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"absolute top-4 left-4 z-50"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"text-white text-sm hover:text-audi-red"[31m
+          [36m>[31m
+            [0m← BACK[0m
+          [36m</button>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mdata-testid[31m=[32m"garage-component"[31m
+        [36m>[31m
+          [36m<button>[31m
+            [0mStart Race Mock[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m App.test.tsx:[2m179:30[22m[39m
+    [90m177| [39m
+    [90m178| [39m        [90m// 2. Join Lobby[39m
+    [90m179| [39m        [35mconst[39m input [33m=[39m screen[33m.[39m[34mgetByPlaceholderText[39m([32m'CODE'[39m)[33m;[39m
+    [90m   | [39m                             [31m^[39m
+    [90m180| [39m        fireEvent[33m.[39m[34mchange[39m(input[33m,[39m { target[33m:[39m { value[33m:[39m [32m'TEST'[39m } })[33m;[39m
+    [90m181| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'JOIN'[39m))[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/7]⎯[22m[39m
+
+[41m[1m FAIL [22m[49m App.test.tsx[2m:207:5[22m[2m > [22mApp Component[2m > [22mdisables "START ENGINES" button when only 1 player is in lobby
+[31m[1mTestingLibraryElementError[22m: Unable to find an element with the placeholder text of: CODE
+
+Ignored nodes: comments, script, style
+[36m<body>[31m
+  [36m<div>[31m
+    [36m<div[31m
+      [33mclass[31m=[32m"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden"[31m
+    [36m>[31m
+      [36m<div[31m
+        [33mclass[31m=[32m"w-full h-[100dvh] max-w-lg relative"[31m
+      [36m>[31m
+        [36m<div[31m
+          [33mclass[31m=[32m"absolute top-4 left-4 z-50"[31m
+        [36m>[31m
+          [36m<button[31m
+            [33mclass[31m=[32m"text-white text-sm hover:text-audi-red"[31m
+          [36m>[31m
+            [0m← BACK[0m
+          [36m</button>[31m
+        [36m</div>[31m
+        [36m<div[31m
+          [33mdata-testid[31m=[32m"garage-component"[31m
+        [36m>[31m
+          [36m<button>[31m
+            [0mStart Race Mock[0m
+          [36m</button>[31m
+        [36m</div>[31m
+      [36m</div>[31m
+    [36m</div>[31m
+  [36m</div>[31m
+[36m</body>[31m[39m
+[90m [2m❯[22m Object.getElementError node_modules/@testing-library/dom/dist/config.js:[2m37:19[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m76:38[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m52:17[22m[39m
+[90m [2m❯[22m node_modules/@testing-library/dom/dist/query-helpers.js:[2m95:19[22m[39m
+[36m [2m❯[22m App.test.tsx:[2m219:30[22m[39m
+    [90m217| [39m        fireEvent[33m.[39m[34mclick[39m(multiplayerBtn)[33m;[39m
+    [90m218| [39m
+    [90m219| [39m        [35mconst[39m input [33m=[39m screen[33m.[39m[34mgetByPlaceholderText[39m([32m'CODE'[39m)[33m;[39m
+    [90m   | [39m                             [31m^[39m
+    [90m220| [39m        fireEvent[33m.[39m[34mchange[39m(input[33m,[39m { target[33m:[39m { value[33m:[39m [32m'SOLO'[39m } })[33m;[39m
+    [90m221| [39m        fireEvent[33m.[39m[34mclick[39m(screen[33m.[39m[34mgetByText[39m([32m'JOIN'[39m))[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/7]⎯[22m[39m
 
 
 [2m Test Files [22m [1m[31m1 failed[39m[22m[90m (1)[39m
-[2m      Tests [22m [1m[31m1 failed[39m[22m[2m | [22m[1m[32m6 passed[39m[22m[90m (7)[39m
-[2m   Start at [22m 11:10:42
-[2m   Duration [22m 727ms[2m (transform 42ms, setup 30ms, import 62ms, tests 419ms, environment 161ms)[22m
+[2m      Tests [22m [1m[31m7 failed[39m[22m[90m (7)[39m
+[2m   Start at [22m 20:07:23
+[2m   Duration [22m 423ms[2m (transform 106ms, setup 31ms, import 130ms, tests 38ms, environment 166ms)[22m
 
-{"numTotalTestSuites":2,"numPassedTestSuites":0,"numFailedTestSuites":2,"numPendingTestSuites":0,"numTotalTests":7,"numPassedTests":6,"numFailedTests":1,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1764843042929,"success":false,"testResults":[{"assertionResults":[{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas renders without crashing","status":"passed","title":"renders without crashing","duration":9.199208999999996,"failureMessages":[],"location":{"line":141,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas initializes audio context on user interaction","status":"passed","title":"initializes audio context on user interaction","duration":1.4714579999999842,"failureMessages":[],"location":{"line":152,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas runs game loop and draws to canvas","status":"passed","title":"runs game loop and draws to canvas","duration":1.595083000000045,"failureMessages":[],"location":{"line":165,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas handles key events for movement","status":"passed","title":"handles key events for movement","duration":1.2382499999999936,"failureMessages":[],"location":{"line":186,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas spawns enemy and handles 3 lives before game over","status":"failed","title":"spawns enemy and handles 3 lives before game over","duration":243.288209,"failureMessages":["AssertionError: expected \"vi.fn()\" to be called with arguments: [ Array(1) ]\u001b[90m\n\nNumber of calls: \u001b[1m0\u001b[22m\n\u001b[39m\n    at Proxy.<anonymous> (file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/expect/dist/index.js:1420:10)\n    at Proxy.<anonymous> (file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/expect/dist/index.js:1090:14)\n    at Proxy.methodWrapper (file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/chai/index.js:1700:25)\n    at /Users/skfyui1/Documents/GitHub/audiracer/audiracer/components/GameCanvas.test.tsx:265:32\n    at file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)\n    at file:///Users/skfyui1/Documents/GitHub/audiracer/audiracer/node_modules/@vitest/runner/dist/index.js:1650:37"],"location":{"line":203,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas collects battery pickup","status":"passed","title":"collects battery pickup","duration":123.05258400000002,"failureMessages":[],"location":{"line":270,"column":5},"meta":{}},{"ancestorTitles":["GameCanvas"],"fullName":"GameCanvas fires projectile and destroys enemy","status":"passed","title":"fires projectile and destroys enemy","duration":38.02025000000003,"failureMessages":[],"location":{"line":322,"column":5},"meta":{}}],"startTime":1764843043239,"endTime":1764843043657.0203,"status":"failed","message":"","name":"/Users/skfyui1/Documents/GitHub/audiracer/audiracer/components/GameCanvas.test.tsx"}]}
+{"numTotalTestSuites":2,"numPassedTestSuites":0,"numFailedTestSuites":2,"numPendingTestSuites":0,"numTotalTests":7,"numPassedTests":0,"numFailedTests":7,"numPendingTests":0,"numTodoTests":0,"snapshot":{"added":0,"failure":false,"filesAdded":0,"filesRemoved":0,"filesRemovedList":[],"filesUnmatched":0,"filesUpdated":0,"matched":0,"total":0,"unchecked":0,"uncheckedKeysByFile":[],"unmatched":0,"updated":0,"didUpdate":false},"startTime":1765048043760,"success":false,"testResults":[{"assertionResults":[{"ancestorTitles":["App Component"],"fullName":"App Component renders the start screen initially","status":"failed","title":"renders the start screen initially","duration":21.157290999999987,"failureMessages":["TestingLibraryElementError: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.\n\nIgnored nodes: comments, script, style\n\u001b[36m<body>\u001b[39m\n  \u001b[36m<div>\u001b[39m\n    \u001b[36m<div\u001b[39m\n      \u001b[33mclass\u001b[39m=\u001b[32m\"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden\"\u001b[39m\n    \u001b[36m>\u001b[39m\n      \u001b[36m<div\u001b[39m\n        \u001b[33mclass\u001b[39m=\u001b[32m\"text-center p-8 animate-fadeIn max-w-md relative z-10\"\u001b[39m\n      \u001b[36m>\u001b[39m\n        \u001b[36m<img\u001b[39m\n          \u001b[33malt\u001b[39m=\u001b[32m\"Retro Racer Logo\"\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"w-64 h-auto mx-auto mb-8 rendering-pixelated\"\u001b[39m\n          \u001b[33msrc\u001b[39m=\u001b[32m\"/assets/pixel_logo.png\"\u001b[39m\n        \u001b[36m/>\u001b[39m\n        \u001b[36m<h1\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mRETRO RACER\u001b[0m\n        \u001b[36m</h1>\u001b[39m\n        \u001b[36m<p\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-audi-grey mb-4 text-lg\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mWelcome, \u001b[0m\n          \u001b[36m<span\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"text-white font-bold\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mUser\u001b[0m\n          \u001b[36m</span>\u001b[39m\n        \u001b[36m</p>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"flex flex-col gap-4\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mSOLO RACE\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mMULTIPLAYER\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<div\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"flex gap-2\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mLEADERBOARD\u001b[0m\n            \u001b[36m</button>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mSETTINGS\u001b[0m\n            \u001b[36m</button>\u001b[39m\n          \u001b[36m</div>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"mt-8 text-xs text-audi-grey\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0m© 2024 Audi Retro Concept. Unofficial Fan Art.\u001b[0m\n        \u001b[36m</div>\u001b[39m\n      \u001b[36m</div>\u001b[39m\n    \u001b[36m</div>\u001b[39m\n  \u001b[36m</div>\u001b[39m\n\u001b[36m</body>\u001b[39m\n    at Object.getElementError (/Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/config.js:37:19)\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:76:38\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:52:17\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:95:19\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/App.test.tsx:104:23\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)"],"location":{"line":101,"column":5},"meta":{}},{"ancestorTitles":["App Component"],"fullName":"App Component transitions to garage when enter button is clicked","status":"failed","title":"transitions to garage when enter button is clicked","duration":3.1351250000000164,"failureMessages":["TestingLibraryElementError: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.\n\nIgnored nodes: comments, script, style\n\u001b[36m<body>\u001b[39m\n  \u001b[36m<div>\u001b[39m\n    \u001b[36m<div\u001b[39m\n      \u001b[33mclass\u001b[39m=\u001b[32m\"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden\"\u001b[39m\n    \u001b[36m>\u001b[39m\n      \u001b[36m<div\u001b[39m\n        \u001b[33mclass\u001b[39m=\u001b[32m\"text-center p-8 animate-fadeIn max-w-md relative z-10\"\u001b[39m\n      \u001b[36m>\u001b[39m\n        \u001b[36m<img\u001b[39m\n          \u001b[33malt\u001b[39m=\u001b[32m\"Retro Racer Logo\"\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"w-64 h-auto mx-auto mb-8 rendering-pixelated\"\u001b[39m\n          \u001b[33msrc\u001b[39m=\u001b[32m\"/assets/pixel_logo.png\"\u001b[39m\n        \u001b[36m/>\u001b[39m\n        \u001b[36m<h1\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mRETRO RACER\u001b[0m\n        \u001b[36m</h1>\u001b[39m\n        \u001b[36m<p\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-audi-grey mb-4 text-lg\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mWelcome, \u001b[0m\n          \u001b[36m<span\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"text-white font-bold\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mUser\u001b[0m\n          \u001b[36m</span>\u001b[39m\n        \u001b[36m</p>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"flex flex-col gap-4\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mSOLO RACE\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mMULTIPLAYER\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<div\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"flex gap-2\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mLEADERBOARD\u001b[0m\n            \u001b[36m</button>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mSETTINGS\u001b[0m\n            \u001b[36m</button>\u001b[39m\n          \u001b[36m</div>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"mt-8 text-xs text-audi-grey\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0m© 2024 Audi Retro Concept. Unofficial Fan Art.\u001b[0m\n        \u001b[36m</div>\u001b[39m\n      \u001b[36m</div>\u001b[39m\n    \u001b[36m</div>\u001b[39m\n  \u001b[36m</div>\u001b[39m\n\u001b[36m</body>\u001b[39m\n    at Object.getElementError (/Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/config.js:37:19)\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:76:38\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:52:17\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:95:19\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/App.test.tsx:109:36\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)"],"location":{"line":107,"column":5},"meta":{}},{"ancestorTitles":["App Component"],"fullName":"App Component transitions to racing state when race starts","status":"failed","title":"transitions to racing state when race starts","duration":2.44233399999996,"failureMessages":["TestingLibraryElementError: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.\n\nIgnored nodes: comments, script, style\n\u001b[36m<body>\u001b[39m\n  \u001b[36m<div>\u001b[39m\n    \u001b[36m<div\u001b[39m\n      \u001b[33mclass\u001b[39m=\u001b[32m\"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden\"\u001b[39m\n    \u001b[36m>\u001b[39m\n      \u001b[36m<div\u001b[39m\n        \u001b[33mclass\u001b[39m=\u001b[32m\"text-center p-8 animate-fadeIn max-w-md relative z-10\"\u001b[39m\n      \u001b[36m>\u001b[39m\n        \u001b[36m<img\u001b[39m\n          \u001b[33malt\u001b[39m=\u001b[32m\"Retro Racer Logo\"\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"w-64 h-auto mx-auto mb-8 rendering-pixelated\"\u001b[39m\n          \u001b[33msrc\u001b[39m=\u001b[32m\"/assets/pixel_logo.png\"\u001b[39m\n        \u001b[36m/>\u001b[39m\n        \u001b[36m<h1\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mRETRO RACER\u001b[0m\n        \u001b[36m</h1>\u001b[39m\n        \u001b[36m<p\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-audi-grey mb-4 text-lg\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mWelcome, \u001b[0m\n          \u001b[36m<span\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"text-white font-bold\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mUser\u001b[0m\n          \u001b[36m</span>\u001b[39m\n        \u001b[36m</p>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"flex flex-col gap-4\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mSOLO RACE\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mMULTIPLAYER\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<div\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"flex gap-2\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mLEADERBOARD\u001b[0m\n            \u001b[36m</button>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mSETTINGS\u001b[0m\n            \u001b[36m</button>\u001b[39m\n          \u001b[36m</div>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"mt-8 text-xs text-audi-grey\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0m© 2024 Audi Retro Concept. Unofficial Fan Art.\u001b[0m\n        \u001b[36m</div>\u001b[39m\n      \u001b[36m</div>\u001b[39m\n    \u001b[36m</div>\u001b[39m\n  \u001b[36m</div>\u001b[39m\n\u001b[36m</body>\u001b[39m\n    at Object.getElementError (/Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/config.js:37:19)\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:76:38\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:52:17\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:95:19\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/App.test.tsx:117:32\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)"],"location":{"line":114,"column":5},"meta":{}},{"ancestorTitles":["App Component"],"fullName":"App Component transitions to game over state and displays stats","status":"failed","title":"transitions to game over state and displays stats","duration":2.2525829999999587,"failureMessages":["TestingLibraryElementError: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.\n\nIgnored nodes: comments, script, style\n\u001b[36m<body>\u001b[39m\n  \u001b[36m<div>\u001b[39m\n    \u001b[36m<div\u001b[39m\n      \u001b[33mclass\u001b[39m=\u001b[32m\"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden\"\u001b[39m\n    \u001b[36m>\u001b[39m\n      \u001b[36m<div\u001b[39m\n        \u001b[33mclass\u001b[39m=\u001b[32m\"text-center p-8 animate-fadeIn max-w-md relative z-10\"\u001b[39m\n      \u001b[36m>\u001b[39m\n        \u001b[36m<img\u001b[39m\n          \u001b[33malt\u001b[39m=\u001b[32m\"Retro Racer Logo\"\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"w-64 h-auto mx-auto mb-8 rendering-pixelated\"\u001b[39m\n          \u001b[33msrc\u001b[39m=\u001b[32m\"/assets/pixel_logo.png\"\u001b[39m\n        \u001b[36m/>\u001b[39m\n        \u001b[36m<h1\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mRETRO RACER\u001b[0m\n        \u001b[36m</h1>\u001b[39m\n        \u001b[36m<p\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-audi-grey mb-4 text-lg\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mWelcome, \u001b[0m\n          \u001b[36m<span\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"text-white font-bold\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mUser\u001b[0m\n          \u001b[36m</span>\u001b[39m\n        \u001b[36m</p>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"flex flex-col gap-4\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mSOLO RACE\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mMULTIPLAYER\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<div\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"flex gap-2\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mLEADERBOARD\u001b[0m\n            \u001b[36m</button>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mSETTINGS\u001b[0m\n            \u001b[36m</button>\u001b[39m\n          \u001b[36m</div>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"mt-8 text-xs text-audi-grey\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0m© 2024 Audi Retro Concept. Unofficial Fan Art.\u001b[0m\n        \u001b[36m</div>\u001b[39m\n      \u001b[36m</div>\u001b[39m\n    \u001b[36m</div>\u001b[39m\n  \u001b[36m</div>\u001b[39m\n\u001b[36m</body>\u001b[39m\n    at Object.getElementError (/Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/config.js:37:19)\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:76:38\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:52:17\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:95:19\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/App.test.tsx:130:32\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)"],"location":{"line":127,"column":5},"meta":{}},{"ancestorTitles":["App Component"],"fullName":"App Component resets to garage when race again is clicked","status":"failed","title":"resets to garage when race again is clicked","duration":2.088458000000003,"failureMessages":["TestingLibraryElementError: Unable to find an element with the text: ENTER GARAGE. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.\n\nIgnored nodes: comments, script, style\n\u001b[36m<body>\u001b[39m\n  \u001b[36m<div>\u001b[39m\n    \u001b[36m<div\u001b[39m\n      \u001b[33mclass\u001b[39m=\u001b[32m\"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden\"\u001b[39m\n    \u001b[36m>\u001b[39m\n      \u001b[36m<div\u001b[39m\n        \u001b[33mclass\u001b[39m=\u001b[32m\"text-center p-8 animate-fadeIn max-w-md relative z-10\"\u001b[39m\n      \u001b[36m>\u001b[39m\n        \u001b[36m<img\u001b[39m\n          \u001b[33malt\u001b[39m=\u001b[32m\"Retro Racer Logo\"\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"w-64 h-auto mx-auto mb-8 rendering-pixelated\"\u001b[39m\n          \u001b[33msrc\u001b[39m=\u001b[32m\"/assets/pixel_logo.png\"\u001b[39m\n        \u001b[36m/>\u001b[39m\n        \u001b[36m<h1\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-4xl md:text-5xl font-bold font-pixel mb-4 tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mRETRO RACER\u001b[0m\n        \u001b[36m</h1>\u001b[39m\n        \u001b[36m<p\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"text-audi-grey mb-4 text-lg\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0mWelcome, \u001b[0m\n          \u001b[36m<span\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"text-white font-bold\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mUser\u001b[0m\n          \u001b[36m</span>\u001b[39m\n        \u001b[36m</p>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"flex flex-col gap-4\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-white text-black hover:bg-audi-lightGrey\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mSOLO RACE\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95 w-full bg-audi-red text-white border-none\"\u001b[39m\n            \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0mMULTIPLAYER\u001b[0m\n          \u001b[36m</button>\u001b[39m\n          \u001b[36m<div\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"flex gap-2\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mLEADERBOARD\u001b[0m\n            \u001b[36m</button>\u001b[39m\n            \u001b[36m<button\u001b[39m\n              \u001b[33mclass\u001b[39m=\u001b[32m\"uppercase font-bold py-3 px-6 tracking-wider transition-all duration-200 clip-path-slant bg-audi-red text-white hover:bg-red-700 active:scale-95  flex-1 bg-gray-800 text-white hover:bg-gray-700 text-xs\"\u001b[39m\n              \u001b[33mstyle\u001b[39m=\u001b[32m\"clip-path: polygon(10% 0, 100% 0, 100% 100%, 0% 100%, 0% 100%, 0% 15%);\"\u001b[39m\n            \u001b[36m>\u001b[39m\n              \u001b[0mSETTINGS\u001b[0m\n            \u001b[36m</button>\u001b[39m\n          \u001b[36m</div>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"mt-8 text-xs text-audi-grey\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[0m© 2024 Audi Retro Concept. Unofficial Fan Art.\u001b[0m\n        \u001b[36m</div>\u001b[39m\n      \u001b[36m</div>\u001b[39m\n    \u001b[36m</div>\u001b[39m\n  \u001b[36m</div>\u001b[39m\n\u001b[36m</body>\u001b[39m\n    at Object.getElementError (/Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/config.js:37:19)\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:76:38\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:52:17\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:95:19\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/App.test.tsx:149:32\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)"],"location":{"line":146,"column":5},"meta":{}},{"ancestorTitles":["App Component"],"fullName":"App Component displays REMATCH and LOBBY buttons in multiplayer game over","status":"failed","title":"displays REMATCH and LOBBY buttons in multiplayer game over","duration":3.4034169999999904,"failureMessages":["TestingLibraryElementError: Unable to find an element with the placeholder text of: CODE\n\nIgnored nodes: comments, script, style\n\u001b[36m<body>\u001b[39m\n  \u001b[36m<div>\u001b[39m\n    \u001b[36m<div\u001b[39m\n      \u001b[33mclass\u001b[39m=\u001b[32m\"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden\"\u001b[39m\n    \u001b[36m>\u001b[39m\n      \u001b[36m<div\u001b[39m\n        \u001b[33mclass\u001b[39m=\u001b[32m\"w-full h-[100dvh] max-w-lg relative\"\u001b[39m\n      \u001b[36m>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"absolute top-4 left-4 z-50\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"text-white text-sm hover:text-audi-red\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0m← BACK\u001b[0m\n          \u001b[36m</button>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mdata-testid\u001b[39m=\u001b[32m\"garage-component\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button>\u001b[39m\n            \u001b[0mStart Race Mock\u001b[0m\n          \u001b[36m</button>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n      \u001b[36m</div>\u001b[39m\n    \u001b[36m</div>\u001b[39m\n  \u001b[36m</div>\u001b[39m\n\u001b[36m</body>\u001b[39m\n    at Object.getElementError (/Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/config.js:37:19)\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:76:38\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:52:17\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:95:19\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/App.test.tsx:179:30\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)"],"location":{"line":165,"column":5},"meta":{}},{"ancestorTitles":["App Component"],"fullName":"App Component disables \"START ENGINES\" button when only 1 player is in lobby","status":"failed","title":"disables \"START ENGINES\" button when only 1 player is in lobby","duration":2.348542000000009,"failureMessages":["TestingLibraryElementError: Unable to find an element with the placeholder text of: CODE\n\nIgnored nodes: comments, script, style\n\u001b[36m<body>\u001b[39m\n  \u001b[36m<div>\u001b[39m\n    \u001b[36m<div\u001b[39m\n      \u001b[33mclass\u001b[39m=\u001b[32m\"h-[100dvh] bg-black text-white font-sans flex flex-col items-center justify-center overflow-hidden\"\u001b[39m\n    \u001b[36m>\u001b[39m\n      \u001b[36m<div\u001b[39m\n        \u001b[33mclass\u001b[39m=\u001b[32m\"w-full h-[100dvh] max-w-lg relative\"\u001b[39m\n      \u001b[36m>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mclass\u001b[39m=\u001b[32m\"absolute top-4 left-4 z-50\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button\u001b[39m\n            \u001b[33mclass\u001b[39m=\u001b[32m\"text-white text-sm hover:text-audi-red\"\u001b[39m\n          \u001b[36m>\u001b[39m\n            \u001b[0m← BACK\u001b[0m\n          \u001b[36m</button>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n        \u001b[36m<div\u001b[39m\n          \u001b[33mdata-testid\u001b[39m=\u001b[32m\"garage-component\"\u001b[39m\n        \u001b[36m>\u001b[39m\n          \u001b[36m<button>\u001b[39m\n            \u001b[0mStart Race Mock\u001b[0m\n          \u001b[36m</button>\u001b[39m\n        \u001b[36m</div>\u001b[39m\n      \u001b[36m</div>\u001b[39m\n    \u001b[36m</div>\u001b[39m\n  \u001b[36m</div>\u001b[39m\n\u001b[36m</body>\u001b[39m\n    at Object.getElementError (/Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/config.js:37:19)\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:76:38\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:52:17\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@testing-library/dom/dist/query-helpers.js:95:19\n    at /Users/stephanstrecker/Documents/GitHub/audiracer/App.test.tsx:219:30\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:145:11\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:915:26\n    at file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1240:20\n    at new Promise (<anonymous>)\n    at runWithTimeout (file:///Users/stephanstrecker/Documents/GitHub/audiracer/node_modules/@vitest/runner/dist/index.js:1206:10)"],"location":{"line":207,"column":5},"meta":{}}],"startTime":1765048044147,"endTime":1765048044183.3486,"status":"failed","message":"","name":"/Users/stephanstrecker/Documents/GitHub/audiracer/App.test.tsx"}]}
 [1m[7m[35m HTML [39m[27m[22m [35mReport is generated[39m
 [2m       You can run [22m[1mnpx vite preview --outDir html[22m[2m to see the test results.[22m
