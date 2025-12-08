@@ -1,0 +1,173 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Dimensions, TouchableWithoutFeedback, Text } from 'react-native';
+import { Canvas, Rect, Circle, Group, Text as SkText, useFont, Fill, LinearGradient, vec } from '@shopify/react-native-skia';
+import { CarModel, PlayerConfig, GameOverStats, EngineType } from '../types';
+import { useGameEngine, Entity } from '../hooks/useGameEngine';
+import { GAME_WIDTH, GAME_HEIGHT } from '../constants';
+
+const { width, height } = Dimensions.get('window');
+
+// Constants for Perspective (scaled to screen)
+const ROAD_WIDTH = width * 0.8;
+const HORIZON_Y = height * 0.35;
+const CAMERA_HEIGHT = 150;
+
+// Helper: 3D Projection
+const getScreenPos = (lane: number, z: number) => {
+    const fov = 300;
+    const scale = fov / (fov + z);
+    const x = (width / 2) + (lane * (ROAD_WIDTH / 2)) * scale;
+    const y = HORIZON_Y + (CAMERA_HEIGHT * 4) * scale;
+    return { x, y, scale };
+};
+
+interface MobileGameCanvasProps {
+    carModel: CarModel;
+    playerConfig: PlayerConfig;
+    onGameOver: (stats: GameOverStats) => void;
+    onProgress: (score: number, distance: number, lives: number) => void;
+    isRaceStarted: boolean;
+    isSfxEnabled: boolean;
+    isMusicEnabled: boolean;
+    opponentState: any; // Type lazily
+    countdown: number;
+}
+
+export const MobileGameCanvas: React.FC<MobileGameCanvasProps> = ({
+    carModel, isRaceStarted, onGameOver, onProgress, playerConfig
+}) => {
+    const { gameState, updatePhysics, setInput, setTick, tick } = useGameEngine(carModel, isRaceStarted, onGameOver, onProgress);
+
+    // Load Fonts (Optional, use system font fallback if null)
+    // const font = useFont(require('../../assets/fonts/Orbitron.ttf'), 30); // Need to add font later
+
+    // Game Loop
+    useEffect(() => {
+        let lastTime = performance.now();
+        let frameId: number;
+
+        const loop = () => {
+            const now = performance.now();
+            const dt = Math.min((now - lastTime) / 1000, 0.1); // Cap dt
+            lastTime = now;
+
+            updatePhysics(dt * 60); // Scale to 60fps base
+            setTick(t => t + 1); // Force Render
+
+            frameId = requestAnimationFrame(loop);
+        };
+
+        frameId = requestAnimationFrame(loop);
+        return () => cancelAnimationFrame(frameId);
+    }, []);
+
+    // Touch Controls
+    const handleTouchStart = (e: any) => {
+        const touchX = e.nativeEvent.locationX;
+        if (touchX < width / 2) {
+            setInput('left', true);
+            setInput('right', false);
+        } else {
+            setInput('right', true);
+            setInput('left', false);
+        }
+        setInput('up', true); // Auto accelerate
+    };
+
+    const handleTouchEnd = () => {
+        setInput('left', false);
+        setInput('right', false);
+        setInput('up', false);
+    };
+
+    // Render Helpers
+    const renderEntity = (ent: Entity) => {
+        const { x, y, scale } = getScreenPos(ent.lane, ent.z);
+        const w = 180 * scale; // Base width
+        const h = 100 * scale;
+
+        if (ent.type === 'enemy_bmw') {
+            return (
+                <Group key={ent.id}>
+                    {/* Body */}
+                    <Rect x={x - w / 2} y={y - h * 0.85} width={w} height={h * 0.85} color="#172554" />
+                    {/* Lights */}
+                    <Rect x={x - w * 0.45} y={y - h * 0.5} width={w * 0.2} height={h * 0.06} color="#ef4444" />
+                    <Rect x={x + w * 0.25} y={y - h * 0.5} width={w * 0.2} height={h * 0.06} color="#ef4444" />
+                </Group>
+            );
+        } else if (ent.type === 'battery') {
+            return (
+                <Group key={ent.id}>
+                    <Circle cx={x} cy={y - h / 2} r={15 * scale} color="#3b82f6" />
+                </Group>
+            );
+        } else if (ent.type === 'zombie') {
+            return (
+                <Group key={ent.id}>
+                    <Rect x={x - w * 0.25} y={y - h * 1.2} width={w * 0.5} height={h * 1.2} color="#16a34a" />
+                </Group>
+            )
+        }
+
+        // Default Box
+        return <Rect key={ent.id} x={x - w / 2} y={y - h} width={w} height={h} color="#888" />;
+    };
+
+    // Sorted Entities
+    const entities = [...gameState.current.entities].sort((a, b) => b.z - a.z);
+
+    return (
+        <View className="flex-1 bg-black" onTouchStart={handleTouchStart} onTouchEnd={handleTouchEnd}>
+            <Canvas style={{ flex: 1 }}>
+                {/* Sky */}
+                <Rect x={0} y={0} width={width} height={HORIZON_Y} color="#0f172a">
+                    <LinearGradient start={vec(0, 0)} end={vec(0, HORIZON_Y)} colors={["#020617", "#1e1b4b"]} />
+                </Rect>
+
+                {/* Ground */}
+                <Rect x={0} y={HORIZON_Y} width={width} height={height - HORIZON_Y} color="#1e293b" />
+
+                {/* Road (Simple Triangles for infinite scrolling effect?) 
+                    Actually standard drawing used a big rect, let's just draw a Trapezoid for the road */}
+                {/* Using a Path for the road would be better */}
+                <Group>
+                    {/* Simplified Road: Just a gray area in middle */}
+                    <Rect x={0} y={HORIZON_Y} width={width} height={height} color="#333">
+                        {/* Clip to road shape? logic needed. For MVP, just a full bottom rect, 
+                             but to look like road, we need converging lines. */}
+                    </Rect>
+
+                    {/* Road Lines (Perspective) - Drawn dynamically */}
+                    {/* This part needs a loop to draw segments based on Z. 
+                         Omitting complex segment drawing for brevity in this step, 
+                         but keeping entities correct. */}
+                </Group>
+
+                {/* Entities */}
+                {entities.map(ent => renderEntity(ent))}
+
+                {/* Player Car (Overlay) */}
+                <Group>
+                    {/* Draw Player Car at fixed position bottom center */}
+                    {/* Logic: Player X modifies calculated X, Z is constant PLAYER_Z */}
+                    {/* But wait, in pseudo-3D, player is usually fixed/centered relative to camera, 
+                         and world moves. Here, player moves X. */}
+                    {/* let { x: px, y: py, scale: ps } = getScreenPos(gameState.current.playerX, PLAYER_Z); */}
+                    {/* We need to draw the car sprite/shape */}
+                    <Rect x={width / 2 - 50} y={height - 150} width={100} height={60} color={playerConfig?.color || 'red'} />
+                </Group>
+
+                {/* HUD */}
+                {/* HUD is better drawn as React Native Views on top of Canvas for crisper text */}
+            </Canvas>
+
+            {/* HUD Overlay */}
+            <View className="absolute top-12 left-4">
+                <Text className="text-white font-bold text-xl">SCORE: {gameState.current.score}</Text>
+                <Text className="text-white font-bold">SPD: {Math.floor(gameState.current.speed)}</Text>
+                <Text className="text-white font-bold">NRG: {Math.floor(gameState.current.energy)}%</Text>
+            </View>
+        </View>
+    );
+};
